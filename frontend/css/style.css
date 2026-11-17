@@ -519,3 +519,136 @@ tbody tr:last-child td {
         transform: translateY(0);
     }
 }
+
+/* =====================================
+   SENTINELAI - TOP NAVIGATION BAR
+===================================== */
+
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.topbar-heading {
+    min-width: 180px;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+
+/* SEARCH BAR */
+
+.topbar-search {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0 11px;
+    height: 39px;
+    width: 225px;
+}
+
+.topbar-search input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #ffffff;
+    width: 100%;
+    min-width: 0;
+    font-size: 12px;
+}
+
+.topbar-search input::placeholder {
+    color: var(--muted);
+}
+
+.search-icon {
+    color: var(--muted);
+    font-size: 20px;
+}
+
+.search-shortcut {
+    color: var(--muted);
+    font-size: 10px;
+    white-space: nowrap;
+}
+
+/* NOTIFICATION BADGE */
+
+.notification-button {
+    position: relative;
+    cursor: pointer;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ef4444;
+    color: white;
+    font-size: 9px;
+    font-weight: 700;
+    border-radius: 50%;
+    min-width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ANALYST PROFILE */
+
+.topbar-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-details {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.profile-details strong {
+    color: #e2e8f0;
+    font-size: 11px;
+}
+
+.profile-details small {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+/* RESPONSIVE DESIGN */
+
+@media (max-width: 900px) {
+    .topbar-right {
+        width: 100%;
+    }
+
+    .topbar-search {
+        flex: 1;
+        min-width: 150px;
+    }
+}
+
+@media (max-width: 600px) {
+    .profile-details {
+        display: none;
+    }
+
+    .environment {
+        font-size: 9px;
+    }
+}
+
