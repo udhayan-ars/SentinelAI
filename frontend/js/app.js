@@ -1,4 +1,3 @@
-
 // ==========================================
 // SENTINELAI - DASHBOARD INITIALIZATION
 // ==========================================
@@ -268,6 +267,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
         chartFilterButtons.forEach(button => {
 
+            const isInitiallyActive =
+                button.dataset.period === "24h";
+
+            button.classList.toggle("active", isInitiallyActive);
+            button.setAttribute(
+                "aria-pressed",
+                String(isInitiallyActive)
+            );
+
             button.addEventListener("click", function () {
 
                 const selectedPeriod = this.dataset.period;
@@ -454,8 +462,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
             alertRows.forEach(row => {
 
+                const searchableRow = row.cloneNode(true);
+
+                const searchStatus =
+                    searchableRow.querySelector(".status-select");
+
+                if (searchStatus) {
+                    searchStatus.replaceWith(
+                        document.createTextNode(
+                            searchStatus.selectedOptions[0]?.textContent || ""
+                        )
+                    );
+                }
+
                 const alertText =
-                    row.textContent.toLowerCase();
+                    searchableRow.textContent.toLowerCase();
 
                 const rowSeverity =
                     (row.dataset.severity || "").toLowerCase();
@@ -667,171 +688,545 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ======================================
+    // TASK 13 - ALERT DETAILS PAGE
+    // ======================================
 
-// ======================================
-// TASK 13 - ALERT DETAILS PAGE
-// ======================================
+    const alertDetailsData = {
 
-const alertDetailsData = {
-    "ALT-001": {
-        destinationIP: "192.168.1.1",
-        description:
-            "Multiple failed login attempts were detected from the same source IP address. This activity may indicate a brute-force login attempt.",
-        steps: [
-            "Review the failed login events and identify the targeted account.",
-            "Check whether any successful login occurred after the failures.",
-            "Investigate the source IP address and related activity.",
-            "Check for similar login attempts against other accounts.",
-            "Escalate the incident if suspicious activity is confirmed."
-        ]
-    },
+        "ALT-001": {
+            destinationIP: "192.168.1.1",
+            description:
+                "Multiple failed login attempts were detected from the same source IP address. This activity may indicate a brute-force login attempt.",
+            steps: [
+                "Review the failed login events and identify the targeted account.",
+                "Check whether any successful login occurred after the failures.",
+                "Investigate the source IP address and related activity.",
+                "Check for similar login attempts against other accounts.",
+                "Escalate the incident if suspicious activity is confirmed."
+            ]
+        },
 
-    "ALT-002": {
-        destinationIP: "192.168.1.50",
-        description:
-            "Suspicious PowerShell execution was detected. Review the command and process activity to determine whether it is legitimate or malicious.",
-        steps: [
-            "Review the PowerShell command-line arguments.",
-            "Identify the parent process and executing user.",
-            "Check related endpoint security alerts.",
-            "Look for suspicious network connections or downloaded files.",
-            "Escalate if malicious execution is confirmed."
-        ]
-    },
+        "ALT-002": {
+            destinationIP: "192.168.1.50",
+            description:
+                "Suspicious PowerShell execution was detected. Review the command and process activity to determine whether it is legitimate or malicious.",
+            steps: [
+                "Review the PowerShell command-line arguments.",
+                "Identify the parent process and executing user.",
+                "Check related endpoint security alerts.",
+                "Look for suspicious network connections or downloaded files.",
+                "Escalate if malicious execution is confirmed."
+            ]
+        },
 
-    "ALT-003": {
-        destinationIP: "10.0.0.1",
-        description:
-            "Port scanning activity was detected from the source IP. This may indicate network reconnaissance against internal systems.",
-        steps: [
-            "Identify the destination host and scanned ports.",
-            "Review firewall logs for blocked and allowed connections.",
-            "Check whether the source IP has generated other alerts.",
-            "Determine whether the scanning activity was authorized.",
-            "Escalate any unauthorized reconnaissance activity."
-        ]
-    },
+        "ALT-003": {
+            destinationIP: "10.0.0.1",
+            description:
+                "Port scanning activity was detected from the source IP. This may indicate network reconnaissance against internal systems.",
+            steps: [
+                "Identify the destination host and scanned ports.",
+                "Review firewall logs for blocked and allowed connections.",
+                "Check whether the source IP has generated other alerts.",
+                "Determine whether the scanning activity was authorized.",
+                "Escalate any unauthorized reconnaissance activity."
+            ]
+        },
 
-    "ALT-004": {
-        destinationIP: "192.168.1.1",
-        description:
-            "An unusual network connection was detected. Review the destination and connection history to determine whether the activity is expected.",
-        steps: [
-            "Review the destination IP and connection details.",
-            "Check DNS and network logs for related activity.",
-            "Identify the process responsible for the connection.",
-            "Compare the activity with normal network behavior.",
-            "Document the investigation findings."
-        ]
+        "ALT-004": {
+            destinationIP: "192.168.1.1",
+            description:
+                "An unusual network connection was detected. Review the destination and connection history to determine whether the activity is expected.",
+            steps: [
+                "Review the destination IP and connection details.",
+                "Check DNS and network logs for related activity.",
+                "Identify the process responsible for the connection.",
+                "Compare the activity with normal network behavior.",
+                "Document the investigation findings."
+            ]
+        }
+
+    };
+
+    // Reuse the existing alerts table body
+    const detailsTableBody = alertsTableBody;
+
+    function setDetailText(elementId, value) {
+
+        const element = document.getElementById(elementId);
+
+        if (element) {
+            element.textContent = value;
+        }
+
     }
-};
 
-const detailsTableBody =
-    document.getElementById("alertsTableBody");
+    function openAlertDetails(row) {
 
-function openAlertDetails(row) {
-    const alertId = row.dataset.alertId;
-    const details = alertDetailsData[alertId];
+        const alertId = row.dataset.alertId;
+        const details = alertDetailsData[alertId];
 
-    if (!details) {
-        return;
-    }
+        if (!details) {
+            console.warn("Alert details not found:", alertId);
+            return;
+        }
 
-    const cells = row.querySelectorAll("td");
+        const cells = row.querySelectorAll("td");
 
-    const alertTitle = cells[0]?.textContent.trim() || "Unknown Alert";
-    const sourceIP = cells[1]?.textContent.trim() || "Unknown";
-    const severity = cells[2]?.textContent.trim() || "Unknown";
-    const timestamp = cells[3]?.textContent.trim() || "Unknown";
-    const status = cells[4]?.textContent.trim() || "Unknown";
+        const alertTitle =
+            cells[0]?.textContent.trim() || "Unknown Alert";
 
-    document.getElementById("detailAlertTitle").textContent = alertTitle;
-    document.getElementById("detailAlertId").textContent =
-        `Alert ID: ${alertId}`;
+        const sourceIP =
+            cells[1]?.textContent.trim() || "Unknown";
 
-    document.getElementById("detailSourceIP").textContent = sourceIP;
-    document.getElementById("detailDestinationIP").textContent =
-        details.destinationIP;
+        const severity =
+            cells[2]?.textContent.trim() || "Unknown";
 
-    document.getElementById("detailTimestamp").textContent = timestamp;
+        const timestamp =
+            cells[3]?.textContent.trim() || "Unknown";
 
-    const statusElement = document.getElementById("detailStatus");
-    statusElement.textContent = status;
-    statusElement.className = `status ${status.toLowerCase()}`;
+        const status =
+            cells[4]?.querySelector(".status-select")
+                ?.selectedOptions[0]?.textContent.trim() ||
+            cells[4]?.textContent.trim() ||
+            "Unknown";
 
-    const severityElement = document.getElementById("detailSeverity");
-    severityElement.textContent = severity;
-    severityElement.className = `severity ${severity.toLowerCase()}`;
+        // ALERT INFORMATION
 
-    document.getElementById("detailDescription").textContent =
-        details.description;
+        setDetailText("detailAlertTitle", alertTitle);
 
-    const stepsList =
-        document.getElementById("detailInvestigationSteps");
-
-    stepsList.replaceChildren();
-
-    details.steps.forEach(step => {
-        const listItem = document.createElement("li");
-        listItem.textContent = step;
-        stepsList.appendChild(listItem);
-    });
-
-    showPage("alertDetails");
-}
-
-if (detailsTableBody) {
-
-    const detailRows =
-        detailsTableBody.querySelectorAll("tr");
-
-    detailRows.forEach((row, index) => {
-        row.dataset.alertId =
-            `ALT-${String(index + 1).padStart(3, "0")}`;
-
-        row.tabIndex = 0;
-        row.style.cursor = "pointer";
-
-        row.setAttribute(
-            "aria-label",
-            `View details for alert ALT-${String(index + 1).padStart(3, "0")}`
+        setDetailText(
+            "detailAlertId",
+            `Alert ID: ${alertId}`
         );
-    });
 
-    detailsTableBody.addEventListener("click", event => {
-        const row = event.target.closest("tr[data-alert-id]");
+        setDetailText("detailSourceIP", sourceIP);
 
-        if (row) {
-            openAlertDetails(row);
+        setDetailText(
+            "detailDestinationIP",
+            details.destinationIP
+        );
+
+        setDetailText("detailTimestamp", timestamp);
+
+        // STATUS BADGE
+
+        const statusElement =
+            document.getElementById("detailStatus");
+
+        if (statusElement) {
+
+            const normalizedStatus =
+                status.toLowerCase().replace(/\s+/g, "-");
+
+            statusElement.textContent = status;
+
+            statusElement.className =
+                `status ${normalizedStatus}`;
+
         }
-    });
 
-    detailsTableBody.addEventListener("keydown", event => {
-        if (
-            (event.key === "Enter" || event.key === " ") &&
-            event.target.matches("tr[data-alert-id]")
-        ) {
-            event.preventDefault();
-            openAlertDetails(event.target);
+        // SEVERITY BADGE
+
+        const severityElement =
+            document.getElementById("detailSeverity");
+
+        if (severityElement) {
+
+            const normalizedSeverity =
+                severity.toLowerCase().replace(/\s+/g, "-");
+
+            severityElement.textContent = severity;
+
+            severityElement.className =
+                `severity ${normalizedSeverity}`;
+
         }
-    });
-}
 
-const backToAlertsButton =
-    document.getElementById("backToAlerts");
+        // ALERT DESCRIPTION
 
-if (backToAlertsButton) {
-    backToAlertsButton.addEventListener("click", () => {
+        setDetailText(
+            "detailDescription",
+            details.description
+        );
 
-        showPage("overview");
+        // INVESTIGATION STEPS
 
-        document.getElementById("alertsTable")?.scrollIntoView({
-            behavior: "smooth",
-            block: "center"
+        const stepsList =
+            document.getElementById("detailInvestigationSteps");
+
+        if (stepsList) {
+
+            stepsList.replaceChildren();
+
+            details.steps.forEach(step => {
+
+                const listItem = document.createElement("li");
+
+                listItem.textContent = step;
+
+                stepsList.appendChild(listItem);
+
+            });
+
+        }
+
+        showPage("alertDetails");
+
+    }
+
+
+    if (detailsTableBody) {
+
+        const detailRows =
+            detailsTableBody.querySelectorAll("tr");
+
+        // ASSIGN ALERT IDs WITHOUT OVERWRITING EXISTING IDs
+
+        detailRows.forEach((row, index) => {
+
+            const alertId =
+                row.dataset.alertId ||
+                `ALT-${String(index + 1).padStart(3, "0")}`;
+
+            row.dataset.alertId = alertId;
+
+            row.tabIndex = 0;
+
+            row.style.cursor = "pointer";
+
+            row.setAttribute(
+                "aria-label",
+                `View details for alert ${alertId}`
+            );
+
         });
 
-    });
-}
+
+        // OPEN DETAILS WHEN ROW IS CLICKED
+
+        detailsTableBody.addEventListener("click", event => {
+
+            const target = event.target;
+
+            if (!(target instanceof Element)) {
+                return;
+            }
+
+            // Do not open details when status dropdown is clicked
+
+            if (target.closest(".status-select")) {
+                return;
+            }
+
+            const row =
+                target.closest("tr[data-alert-id]");
+
+            if (row) {
+                openAlertDetails(row);
+            }
+
+        });
+
+
+        // KEYBOARD ACCESSIBILITY
+
+        detailsTableBody.addEventListener("keydown", event => {
+
+            if (
+                (event.key === "Enter" || event.key === " ") &&
+                event.target.matches("tr[data-alert-id]")
+            ) {
+
+                event.preventDefault();
+
+                openAlertDetails(event.target);
+
+            }
+
+        });
+
+    }
+
+
+    // ======================================
+    // BACK TO ALERTS BUTTON
+    // ======================================
+
+    const backToAlertsButton =
+        document.getElementById("backToAlerts");
+
+    if (backToAlertsButton) {
+
+        backToAlertsButton.addEventListener("click", () => {
+
+            showPage("overview");
+
+            document.getElementById("alertsTable")?.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+        });
+
+    }
+
+
+    // ======================================
+    // TASK 14 - ALERT STATUS MANAGEMENT
+    // ======================================
+
+    const alertStatusStorageKey =
+        "sentinelAI.alertStatuses";
+
+    const validAlertStatuses = [
+        "open",
+        "investigating",
+        "resolved"
+    ];
+
+
+    // LOAD SAVED ALERT STATUSES
+
+    function loadAlertStatuses() {
+
+        try {
+
+            const savedStatuses = JSON.parse(
+                localStorage.getItem(alertStatusStorageKey) || "{}"
+            );
+
+            return savedStatuses &&
+                typeof savedStatuses === "object" &&
+                !Array.isArray(savedStatuses)
+                ? savedStatuses
+                : {};
+
+        } catch (error) {
+
+            console.warn(
+                "Unable to load saved alert statuses:",
+                error
+            );
+
+            return {};
+
+        }
+
+    }
+
+    let savedAlertStatuses = loadAlertStatuses();
+
+
+    // CREATE STATUS SUMMARY ELEMENT
+
+    const alertStatusSummary =
+        document.createElement("div");
+
+    alertStatusSummary.id = "alertStatusSummary";
+
+    alertStatusSummary.className = "alert-status-summary";
+
+    alertStatusSummary.setAttribute(
+        "aria-live",
+        "polite"
+    );
+
+    if (alertsTable) {
+
+        alertsTable.insertAdjacentElement(
+            "beforebegin",
+            alertStatusSummary
+        );
+
+    }
+
+
+    // UPDATE STATUS SUMMARY COUNTS
+
+    function updateAlertStatusSummary() {
+
+        const statusCounts = {
+            open: 0,
+            investigating: 0,
+            resolved: 0
+        };
+
+        if (detailsTableBody) {
+
+            detailsTableBody
+                .querySelectorAll(".status-select")
+                .forEach(select => {
+
+                    if (statusCounts[select.value] !== undefined) {
+                        statusCounts[select.value]++;
+                    }
+
+                });
+
+        }
+
+        alertStatusSummary.textContent =
+            `Open: ${statusCounts.open} | ` +
+            `Investigating: ${statusCounts.investigating} | ` +
+            `Resolved: ${statusCounts.resolved}`;
+
+    }
+
+
+    // SAVE ALERT STATUSES TO LOCAL STORAGE
+
+    function saveAlertStatuses() {
+
+        try {
+
+            localStorage.setItem(
+                alertStatusStorageKey,
+                JSON.stringify(savedAlertStatuses)
+            );
+
+        } catch (error) {
+
+            console.warn(
+                "Unable to save alert statuses:",
+                error
+            );
+
+        }
+
+    }
+
+
+    if (detailsTableBody) {
+
+        const statusRows =
+            detailsTableBody.querySelectorAll("tr[data-alert-id]");
+
+
+        // RESTORE SAVED STATUSES WHEN PAGE LOADS
+
+        statusRows.forEach(row => {
+
+            const alertId = row.dataset.alertId;
+
+            const statusSelect =
+                row.querySelector(".status-select");
+
+            if (!statusSelect) {
+                return;
+            }
+
+            const savedStatus =
+                savedAlertStatuses[alertId];
+
+            if (validAlertStatuses.includes(savedStatus)) {
+                statusSelect.value = savedStatus;
+            }
+
+            // APPLY STATUS CLASS
+
+            statusSelect.className =
+                `status-select ${statusSelect.value}`;
+
+            statusSelect.setAttribute(
+                "aria-label",
+                `Update status for alert ${alertId}`
+            );
+
+        });
+
+
+        // HANDLE STATUS CHANGES
+
+        detailsTableBody.addEventListener("change", event => {
+
+            const target = event.target;
+
+            if (!(target instanceof Element)) {
+                return;
+            }
+
+            const statusSelect =
+                target.closest(".status-select");
+
+            if (!statusSelect) {
+                return;
+            }
+
+            const row =
+                statusSelect.closest("tr[data-alert-id]");
+
+            if (
+                !row ||
+                !validAlertStatuses.includes(statusSelect.value)
+            ) {
+                return;
+            }
+
+            const alertId = row.dataset.alertId;
+
+            const newStatus = statusSelect.value;
+
+
+            // UPDATE STATUS DROPDOWN STYLE
+
+            statusSelect.className =
+                `status-select ${newStatus}`;
+
+
+            // SAVE UPDATED STATUS
+
+            savedAlertStatuses[alertId] = newStatus;
+
+            saveAlertStatuses();
+
+
+            // UPDATE SUMMARY COUNTS
+
+            updateAlertStatusSummary();
+
+
+            // REFRESH SEARCH RESULTS
+            // So the updated status is searchable immediately
+
+            if (alertSearch) {
+
+                alertSearch.dispatchEvent(
+                    new Event("input", {
+                        bubbles: true
+                    })
+                );
+
+            }
+
+
+            console.log(
+                `Alert ${alertId} status updated to ${newStatus}.`
+            );
+
+        });
+
+    }
+
+
+    // INITIAL STATUS SUMMARY
+
+    updateAlertStatusSummary();
+
+
+    // REFRESH SEARCH AFTER RESTORING SAVED STATUSES
+
+    if (alertSearch) {
+
+        alertSearch.dispatchEvent(
+            new Event("input", {
+                bubbles: true
+            })
+        );
+
+    }
+
+
+    // ======================================
     // DASHBOARD INITIALIZATION COMPLETE
     // ======================================
 

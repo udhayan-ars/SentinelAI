@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SentinelAI | Security Operations Center</title>
+
     <link rel="stylesheet" href="css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -28,17 +29,17 @@
         <p class="nav-heading">MAIN MENU</p>
 
         <nav class="navigation">
-            <a href="#overview" class="nav-link active" data-page="overview"><span>◈</span> Overview</a>
-            <a href="#monitoring" class="nav-link" data-page="monitoring"><span>◉</span> Live Monitoring</a>
-            <a href="#events" class="nav-link" data-page="events"><span>▤</span> Security Events</a>
-            <a href="#alerts" class="nav-link" data-page="alerts"><span>⚠</span> Threat Alerts</a>
-            <a href="#investigation" class="nav-link" data-page="investigation"><span>⌕</span> AI Investigation</a>
-            <a href="#mitre" class="nav-link" data-page="mitre"><span>▦</span> MITRE ATT&CK</a>
-            <a href="#timeline" class="nav-link" data-page="timeline"><span>⌁</span> Attack Timeline</a>
-            <a href="#incidents" class="nav-link" data-page="incidents"><span>◷</span> Incident Management</a>
-            <a href="#response" class="nav-link" data-page="response"><span>⚡</span> Response Center</a>
-            <a href="#reports" class="nav-link" data-page="reports"><span>▧</span> Reports</a>
-            <a href="#settings" class="nav-link" data-page="settings"><span>⚙</span> Settings</a>
+            <a href="#overview" class="nav-link active" data-page="overview"><span>&#9632;</span> Overview</a>
+            <a href="#monitoring" class="nav-link" data-page="monitoring"><span>&#9673;</span> Live Monitoring</a>
+            <a href="#events" class="nav-link" data-page="events"><span>&#9633;</span> Security Events</a>
+            <a href="#alerts" class="nav-link" data-page="alerts"><span>&#9888;</span> Threat Alerts</a>
+            <a href="#investigation" class="nav-link" data-page="investigation"><span>&#8987;</span> AI Investigation</a>
+            <a href="#mitre" class="nav-link" data-page="mitre"><span>&#9635;</span> MITRE ATT&CK</a>
+            <a href="#timeline" class="nav-link" data-page="timeline"><span>&#9201;</span> Attack Timeline</a>
+            <a href="#incidents" class="nav-link" data-page="incidents"><span>&#9679;</span> Incident Management</a>
+            <a href="#response" class="nav-link" data-page="response"><span>&#9889;</span> Response Center</a>
+            <a href="#reports" class="nav-link" data-page="reports"><span>&#9638;</span> Reports</a>
+            <a href="#settings" class="nav-link" data-page="settings"><span>&#9881;</span> Settings</a>
         </nav>
 
         <div class="sidebar-bottom">
@@ -69,7 +70,7 @@
             <div class="topbar-right">
 
                 <div class="topbar-search">
-                    <span class="search-icon">⌕</span>
+                    <span class="search-icon">&#8981;</span>
                     <input type="text" id="topbarSearch" placeholder="Search dashboard...">
                     <span class="search-shortcut">Enter</span>
                 </div>
@@ -81,7 +82,7 @@
 
                 <button class="icon-button notification-button"
                     id="notificationButton" type="button" title="View alerts">
-                    ♧
+                    &#9888;
                     <span class="notification-badge">3</span>
                 </button>
 
@@ -104,7 +105,7 @@
                     <h2>Security Operations Overview</h2>
                     <p>Monitor your security environment and investigate potential threats.</p>
                 </div>
-                <span class="sample-label">DEMO DATA · NOT LIVE</span>
+                <span class="sample-label">DEMO DATA &middot; NOT LIVE</span>
             </div>
 
             <!-- DASHBOARD STATISTICS -->
@@ -113,7 +114,7 @@
                 <article class="stat-card">
                     <div class="stat-top">
                         <span>Total Events</span>
-                        <span class="stat-icon blue">▤</span>
+                        <span class="stat-icon blue">&#9633;</span>
                     </div>
                     <h2 id="totalEvents">0</h2>
                     <div class="stat-bottom">
@@ -125,7 +126,7 @@
                 <article class="stat-card">
                     <div class="stat-top">
                         <span>Active Alerts</span>
-                        <span class="stat-icon orange">⚠</span>
+                        <span class="stat-icon orange">&#9888;</span>
                     </div>
                     <h2 id="activeAlerts">0</h2>
                     <div class="stat-bottom">
@@ -149,7 +150,7 @@
                 <article class="stat-card">
                     <div class="stat-top">
                         <span>System Health</span>
-                        <span class="stat-icon green">⌁</span>
+                        <span class="stat-icon green">&#9201;</span>
                     </div>
                     <h2 id="systemHealthStatus">Operational</h2>
                     <div class="stat-bottom">
@@ -198,7 +199,7 @@
                         <canvas id="eventsChart"></canvas>
                     </div>
 
-                    <p class="chart-data-note">DEMO DATA · NOT LIVE</p>
+                    <p class="chart-data-note">DEMO DATA &middot; NOT LIVE</p>
 
                 </article>
 
@@ -215,7 +216,7 @@
                         <canvas id="severityChart"></canvas>
                     </div>
 
-                    <p class="chart-data-note">DEMO DATA · NOT LIVE</p>
+                    <p class="chart-data-note">DEMO DATA &middot; NOT LIVE</p>
 
                 </article>
 
@@ -231,15 +232,15 @@
                     </div>
 
                     <a href="#alerts" class="view-all" data-page="alerts">
-                        View All Alerts →
+                        View All Alerts &rarr;
                     </a>
                 </div>
 
-                <!-- TASK 12: ALERT SEARCH AND FILTER CONTROLS -->
+                <!-- TASK 12: ALERT SEARCH AND FILTER -->
                 <div class="alerts-toolbar">
 
                     <div class="alerts-search">
-                        <span class="search-icon">⌕</span>
+                        <span class="search-icon">&#8981;</span>
 
                         <input
                             type="search"
@@ -255,7 +256,7 @@
                             aria-label="Clear alert search"
                             title="Clear search"
                             hidden>
-                            ✕
+                            &#10005;
                         </button>
                     </div>
 
@@ -304,36 +305,60 @@
 
                         <tbody id="alertsTableBody">
 
-                            <tr data-severity="critical">
+                            <tr data-alert-id="ALT-001" data-severity="critical" tabindex="0">
                                 <td>Multiple Failed Login Attempts</td>
                                 <td>192.168.1.105</td>
                                 <td><span class="severity critical">Critical</span></td>
                                 <td>10:42:15 AM</td>
-                                <td><span class="status open">Open</span></td>
+                                <td>
+                                    <select class="status-select open" aria-label="Update status for alert ALT-001">
+                                        <option value="open" selected>Open</option>
+                                        <option value="investigating">Investigating</option>
+                                        <option value="resolved">Resolved</option>
+                                    </select>
+                                </td>
                             </tr>
 
-                            <tr data-severity="high">
+                            <tr data-alert-id="ALT-002" data-severity="high" tabindex="0">
                                 <td>Suspicious PowerShell Execution</td>
                                 <td>192.168.1.110</td>
                                 <td><span class="severity high">High</span></td>
                                 <td>10:35:20 AM</td>
-                                <td><span class="status investigating">Investigating</span></td>
+                                <td>
+                                    <select class="status-select investigating" aria-label="Update status for alert ALT-002">
+                                        <option value="open">Open</option>
+                                        <option value="investigating" selected>Investigating</option>
+                                        <option value="resolved">Resolved</option>
+                                    </select>
+                                </td>
                             </tr>
 
-                            <tr data-severity="medium">
+                            <tr data-alert-id="ALT-003" data-severity="medium" tabindex="0">
                                 <td>Port Scanning Activity</td>
                                 <td>10.0.0.25</td>
                                 <td><span class="severity medium">Medium</span></td>
                                 <td>10:28:45 AM</td>
-                                <td><span class="status open">Open</span></td>
+                                <td>
+                                    <select class="status-select open" aria-label="Update status for alert ALT-003">
+                                        <option value="open" selected>Open</option>
+                                        <option value="investigating">Investigating</option>
+                                        <option value="resolved">Resolved</option>
+                                    </select>
+                                </td>
                             </tr>
 
-                            <tr data-severity="low">
+                            <tr data-alert-id="ALT-004" data-severity="low" tabindex="0">
                                 <td>Unusual Network Connection</td>
                                 <td>192.168.1.120</td>
                                 <td><span class="severity low">Low</span></td>
                                 <td>10:15:30 AM</td>
-                                <td><span class="status resolved">Resolved</span></td>
+                                <td>
+                                    <select class="status-select resolved" aria-label="Update status for alert ALT-004">
+                                        <option value="open">Open</option>
+                                        <option value="investigating">Investigating</option>
+                                        <option value="resolved" selected>Resolved</option>
+                                    </select>
+                                </td>
                             </tr>
 
                         </tbody>
@@ -347,7 +372,7 @@
                         aria-live="polite"
                         hidden>
 
-                        <span>⌕</span>
+                        <span>&#8981;</span>
                         <p>No matching security alerts found.</p>
                         <small>Try another alert type, IP address or severity.</small>
 
@@ -355,7 +380,7 @@
 
                 </div>
 
-                <p class="chart-data-note">SAMPLE ALERT RECORDS · NOT LIVE</p>
+                <p class="chart-data-note">SAMPLE ALERT RECORDS &middot; NOT LIVE</p>
 
             </section>
 
@@ -387,7 +412,6 @@
                 Threat alert management interface.
             </div>
         </section>
-
 
         <!-- TASK 13 - ALERT DETAILS PAGE -->
         <section class="page-section" id="alertDetails" hidden>
@@ -452,6 +476,7 @@
             <p class="demo-data-note">DEMO DATA - NOT LIVE</p>
 
         </section>
+
         <!-- PAGE 05 - AI INVESTIGATION -->
         <section class="page-section" id="investigation" hidden>
             <h2>AI Investigation</h2>
@@ -517,7 +542,7 @@
 
         <!-- FOOTER -->
         <footer class="footer">
-            <span>© 2026 SentinelAI. All rights reserved.</span>
+            <span>&copy; 2026 SentinelAI. All rights reserved.</span>
             <span>AI-Powered Security Operations Center</span>
         </footer>
 
