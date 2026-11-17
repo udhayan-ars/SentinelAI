@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SentinelAI | Security Operations Center</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon">S</div>
+                <div>
+                    <h2>SENTINEL<span>AI</span></h2>
+                    <p>AI-POWERED SOC</p>
+                </div>
+            </div>
+
+            <p class="nav-heading">WORKSPACE</p>
+            <nav class="navigation">
+                <a href="#" class="nav-link active"><span>▦</span> Overview</a>
+                <a href="#" class="nav-link"><span>◉</span> Live Monitoring</a>
+                <a href="#" class="nav-link"><span>▤</span> Security Events</a>
+                <a href="#" class="nav-link"><span>⚠</span> Threat Alerts</a>
+                <a href="#" class="nav-link"><span>✧</span> AI Investigation</a>
+                <a href="#" class="nav-link"><span>⌘</span> MITRE ATT&CK</a>
+                <a href="#" class="nav-link"><span>⌁</span> Attack Timeline</a>
+                <a href="#" class="nav-link"><span>▣</span> Incident Management</a>
+                <a href="#" class="nav-link"><span>⛨</span> Response Center</a>
+                <a href="#" class="nav-link"><span>▧</span> Reports</a>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <a href="#" class="nav-link"><span>⚙</span> Settings</a>
+                <div class="analyst-profile">
+                    <div class="avatar">SA</div>
+                    <div>
+                        <strong>Security Analyst</strong>
+                        <small>Analyst Account</small>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div>
+                    <p class="breadcrumb">Workspace / Overview</p>
+                    <h1>Security Overview</h1>
+                </div>
+                <div class="topbar-right">
+                    <span class="environment"><span class="status-dot"></span> LAB ENVIRONMENT</span>
+                    <button class="icon-button" aria-label="Notifications">♧</button>
+                    <div class="avatar">SA</div>
+                </div>
+            </header>
+
+            <section class="welcome-section">
+                <div>
+                    <h2>Security Operations Center</h2>
+                    <p>Monitor security activity, investigate threats, and manage incidents.</p>
+                </div>
+                <span class="sample-label">DEMO DATA · NOT LIVE</span>
+            </section>
+
+            <section class="stats-grid">
+                <article class="stat-card">
+                    <div class="stat-top"><span>Total Events</span><span class="stat-icon blue">▤</span></div>
+                    <h2 id="totalEvents">12,480</h2>
+                    <p class="stat-note">Events received in this demo</p>
+                </article>
+                <article class="stat-card">
+                    <div class="stat-top"><span>Active Alerts</span><span class="stat-icon orange">⚠</span></div>
+                    <h2 id="activeAlerts">24</h2>
+                    <p class="stat-note">Awaiting analyst review</p>
+                </article>
+                <article class="stat-card">
+                    <div class="stat-top"><span>Critical Incidents</span><span class="stat-icon red">!</span></div>
+                    <h2 id="criticalIncidents">03</h2>
+                    <p class="stat-note">Require immediate attention</p>
+                </article>
+                <article class="stat-card">
+                    <div class="stat-top"><span>System Health</span><span class="stat-icon green">⌁</span></div>
+                    <h2>Healthy</h2>
+                    <p class="stat-note">Demo interface status only</p>
+                </article>
+            </section>
+
+            <section class="charts-grid">
+                <article class="panel">
+                    <div class="panel-heading">
+                        <div><h3>Security Event Activity</h3><p>Sample events over the last 7 days</p></div>
+                        <span class="panel-tag">7 DAYS</span>
+                    </div>
+                    <div class="chart-container"><canvas id="eventsChart"></canvas></div>
+                </article>
+                <article class="panel">
+                    <div class="panel-heading">
+                        <div><h3>Alert Severity</h3><p>Sample alert distribution</p></div>
+                        <span class="panel-tag">OVERVIEW</span>
+                    </div>
+                    <div class="chart-container"><canvas id="severityChart"></canvas></div>
+                </article>
+            </section>
+
+            <section class="panel alerts-panel">
+                <div class="panel-heading">
+                    <div><h3>Recent Security Alerts</h3><p>Review suspicious activities detected in the demo dataset</p></div>
+                    <a href="#" class="view-all">View all alerts →</a>
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ALERT</th>
+                                <th>SOURCE IP</th>
+                                <th>SEVERITY</th>
+                                <th>TIME</th>
+                                <th>STATUS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="alertsTable">
+                            <tr>
+                                <td>Multiple Failed Login Attempts</td>
+                                <td>192.168.1.105</td>
+                                <td><span class="severity critical">Critical</span></td>
+                                <td>09:42:18</td>
+                                <td><span class="status open">Open</span></td>
+                            </tr>
+                            <tr>
+                                <td>Suspicious Port Scanning</td>
+                                <td>10.0.0.24</td>
+                                <td><span class="severity high">High</span></td>
+                                <td>09:35:04</td>
+                                <td><span class="status investigating">Investigating</span></td>
+                            </tr>
+                            <tr>
+                                <td>Unusual PowerShell Activity</td>
+                                <td>192.168.1.112</td>
+                                <td><span class="severity medium">Medium</span></td>
+                                <td>09:21:51</td>
+                                <td><span class="status open">Open</span></td>
+                            </tr>
+                            <tr>
+                                <td>Repeated Authentication Failure</td>
+                                <td>172.16.0.18</td>
+                                <td><span class="severity low">Low</span></td>
+                                <td>08:58:32</td>
+                                <td><span class="status resolved">Resolved</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <footer class="footer">
+                <span>SentinelAI © 2026</span>
+                <span>AI-Assisted Security Operations Center</span>
+            </footer>
+        </main>
+    </div>
+    <script src="js/app.js"></script>
+</body>
+</html>
