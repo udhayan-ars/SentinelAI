@@ -164,7 +164,6 @@
             <!-- CHARTS -->
             <section class="charts-grid">
 
-                <!-- EVENT ACTIVITY CHART -->
                 <article class="panel">
 
                     <div class="panel-heading">
@@ -180,23 +179,17 @@
                             <button class="chart-filter active"
                                 data-period="24h"
                                 type="button"
-                                aria-pressed="true">
-                                24 Hours
-                            </button>
+                                aria-pressed="true">24 Hours</button>
 
                             <button class="chart-filter"
                                 data-period="7d"
                                 type="button"
-                                aria-pressed="false">
-                                7 Days
-                            </button>
+                                aria-pressed="false">7 Days</button>
 
                             <button class="chart-filter"
                                 data-period="30d"
                                 type="button"
-                                aria-pressed="false">
-                                30 Days
-                            </button>
+                                aria-pressed="false">30 Days</button>
 
                         </div>
                     </div>
@@ -209,7 +202,6 @@
 
                 </article>
 
-                <!-- ALERT SEVERITY CHART -->
                 <article class="panel">
 
                     <div class="panel-heading">
@@ -243,38 +235,56 @@
                     </a>
                 </div>
 
-                <!-- ALERT TABLE CONTROLS -->
+                <!-- TASK 12: ALERT SEARCH AND FILTER CONTROLS -->
                 <div class="alerts-toolbar">
 
                     <div class="alerts-search">
                         <span class="search-icon">⌕</span>
+
                         <input
                             type="search"
                             id="alertSearch"
                             placeholder="Search alert type or source IP..."
-                            aria-label="Search security alerts">
+                            aria-label="Search alerts by alert type or source IP"
+                            autocomplete="off">
+
+                        <button
+                            type="button"
+                            id="clearAlertSearch"
+                            class="clear-search-button"
+                            aria-label="Clear alert search"
+                            title="Clear search"
+                            hidden>
+                            ✕
+                        </button>
                     </div>
 
                     <div class="alerts-filter">
                         <label for="severityFilter">Severity:</label>
 
-                        <select id="severityFilter" aria-label="Filter alerts by severity">
+                        <select id="severityFilter"
+                            aria-label="Filter alerts by severity">
+
                             <option value="all">All Severities</option>
                             <option value="critical">Critical</option>
                             <option value="high">High</option>
                             <option value="medium">Medium</option>
                             <option value="low">Low</option>
+
                         </select>
                     </div>
 
                 </div>
 
-                <!-- ALERT COUNT -->
+                <!-- SEARCH RESULT INFORMATION -->
                 <div class="alerts-table-info">
+
                     <span id="alertCount" aria-live="polite">
-                        Showing 4 alerts
+                        Showing 4 of 4 alerts
                     </span>
+
                     <span>DEMO RECORDS</span>
+
                 </div>
 
                 <!-- ALERT TABLE -->
@@ -297,60 +307,50 @@
                             <tr data-severity="critical">
                                 <td>Multiple Failed Login Attempts</td>
                                 <td>192.168.1.105</td>
-                                <td>
-                                    <span class="severity critical">Critical</span>
-                                </td>
+                                <td><span class="severity critical">Critical</span></td>
                                 <td>10:42:15 AM</td>
-                                <td>
-                                    <span class="status open">Open</span>
-                                </td>
+                                <td><span class="status open">Open</span></td>
                             </tr>
 
                             <tr data-severity="high">
                                 <td>Suspicious PowerShell Execution</td>
                                 <td>192.168.1.110</td>
-                                <td>
-                                    <span class="severity high">High</span>
-                                </td>
+                                <td><span class="severity high">High</span></td>
                                 <td>10:35:20 AM</td>
-                                <td>
-                                    <span class="status investigating">Investigating</span>
-                                </td>
+                                <td><span class="status investigating">Investigating</span></td>
                             </tr>
 
                             <tr data-severity="medium">
                                 <td>Port Scanning Activity</td>
                                 <td>10.0.0.25</td>
-                                <td>
-                                    <span class="severity medium">Medium</span>
-                                </td>
+                                <td><span class="severity medium">Medium</span></td>
                                 <td>10:28:45 AM</td>
-                                <td>
-                                    <span class="status open">Open</span>
-                                </td>
+                                <td><span class="status open">Open</span></td>
                             </tr>
 
                             <tr data-severity="low">
                                 <td>Unusual Network Connection</td>
                                 <td>192.168.1.120</td>
-                                <td>
-                                    <span class="severity low">Low</span>
-                                </td>
+                                <td><span class="severity low">Low</span></td>
                                 <td>10:15:30 AM</td>
-                                <td>
-                                    <span class="status resolved">Resolved</span>
-                                </td>
+                                <td><span class="status resolved">Resolved</span></td>
                             </tr>
 
                         </tbody>
 
                     </table>
 
-                    <!-- NO RESULTS MESSAGE -->
-                    <div id="noAlertsMessage" class="no-alerts-message" hidden>
+                    <!-- NO SEARCH RESULTS -->
+                    <div id="noAlertsMessage"
+                        class="no-alerts-message"
+                        role="status"
+                        aria-live="polite"
+                        hidden>
+
                         <span>⌕</span>
                         <p>No matching security alerts found.</p>
-                        <small>Try changing your search or severity filter.</small>
+                        <small>Try another alert type, IP address or severity.</small>
+
                     </div>
 
                 </div>
@@ -461,7 +461,6 @@
 
 </div>
 
-<!-- JAVASCRIPT -->
 <script src="js/app.js"></script>
 
 </body>

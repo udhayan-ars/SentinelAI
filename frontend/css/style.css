@@ -1299,3 +1299,60 @@ tbody tr:last-child td {
     }
 
 }
+
+/* ==========================================
+   TASK 12 - ALERT SEARCH CLEAR BUTTON
+========================================== */
+
+.clear-search-button {
+    width: 25px;
+    height: 25px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1e3048;
+    border: 1px solid #304966;
+    border-radius: 5px;
+    color: #9aabc1;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.2s ease,
+                color 0.2s ease,
+                border-color 0.2s ease;
+}
+
+.clear-search-button:hover {
+    background: #40232c;
+    border-color: #ef4444;
+    color: #fb8585;
+}
+
+.clear-search-button:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+}
+
+.clear-search-button[hidden] {
+    display: none !important;
+}
+
+/* SEARCH INPUT CLEAR BUTTON ALIGNMENT */
+
+.alerts-search {
+    min-width: 0;
+}
+
+.alerts-search input {
+    flex: 1;
+}
+
+/* SMALL SCREEN SUPPORT */
+
+@media (max-width: 450px) {
+    .clear-search-button {
+        width: 23px;
+        height: 23px;
+    }
+}
+

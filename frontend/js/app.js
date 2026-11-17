@@ -69,10 +69,8 @@ document.addEventListener("DOMContentLoaded", function () {
     navigationLinks.forEach(link => {
 
         link.addEventListener("click", function (event) {
-
             event.preventDefault();
             showPage(this.dataset.page);
-
         });
 
     });
@@ -80,10 +78,8 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".view-all[data-page]").forEach(link => {
 
         link.addEventListener("click", function (event) {
-
             event.preventDefault();
             showPage(this.dataset.page);
-
         });
 
     });
@@ -210,9 +206,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 datasets: [{
                     label: "Security Events",
-
                     data: chartPeriods["24h"].data,
-
                     borderColor: "#3b82f6",
                     backgroundColor: "rgba(59, 130, 246, 0.12)",
                     fill: true,
@@ -276,7 +270,6 @@ document.addEventListener("DOMContentLoaded", function () {
             button.addEventListener("click", function () {
 
                 const selectedPeriod = this.dataset.period;
-
                 const periodData = chartPeriods[selectedPeriod];
 
                 if (!periodData) {
@@ -284,16 +277,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 eventsChart.data.labels = periodData.labels;
-
-                eventsChart.data.datasets[0].data =
-                    periodData.data;
+                eventsChart.data.datasets[0].data = periodData.data;
 
                 eventsChart.update();
 
                 chartFilterButtons.forEach(filter => {
 
-                    const isActive =
-                        filter === this;
+                    const isActive = filter === this;
 
                     filter.classList.toggle("active", isActive);
 
@@ -365,7 +355,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         position: "bottom",
 
                         labels: {
-
                             color: "#cbd5e1",
                             padding: 18,
                             usePointStyle: true,
@@ -374,7 +363,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             font: {
                                 size: 11
                             }
-
                         }
 
                     },
@@ -414,11 +402,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ======================================
-    // TASK 11 - SECURITY ALERT SEARCH
+    // TASK 12 - ENHANCED ALERT SEARCH
     // ======================================
 
     const alertSearch =
         document.getElementById("alertSearch");
+
+    const clearAlertSearch =
+        document.getElementById("clearAlertSearch");
 
     const severityFilter =
         document.getElementById("severityFilter");
@@ -444,8 +435,9 @@ document.addEventListener("DOMContentLoaded", function () {
         alertsTable
     ) {
 
-        const alertRows =
-            Array.from(alertsTableBody.querySelectorAll("tr"));
+        const alertRows = Array.from(
+            alertsTableBody.querySelectorAll("tr")
+        );
 
         const totalAlertCount = alertRows.length;
 
@@ -455,7 +447,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 alertSearch.value.trim().toLowerCase();
 
             const selectedSeverity =
-                severityFilter.value.toLowerCase();
+                severityFilter.value.trim().toLowerCase();
 
             let visibleCount = 0;
 
@@ -465,15 +457,18 @@ document.addEventListener("DOMContentLoaded", function () {
                     row.textContent.toLowerCase();
 
                 const rowSeverity =
-                    row.dataset.severity.toLowerCase();
+                    (row.dataset.severity || "").toLowerCase();
 
+                // Search alert type, source IP and other row details
                 const matchesSearch =
                     alertText.includes(searchValue);
 
+                // Apply severity filter
                 const matchesSeverity =
                     selectedSeverity === "all" ||
                     rowSeverity === selectedSeverity;
 
+                // Combine search and severity conditions
                 const shouldDisplay =
                     matchesSearch && matchesSeverity;
 
@@ -497,9 +492,15 @@ document.addEventListener("DOMContentLoaded", function () {
             noAlertsMessage.hidden = !noResults;
             alertsTable.hidden = noResults;
 
+            // SHOW CLEAR BUTTON ONLY WHEN SEARCH HAS TEXT
+
+            if (clearAlertSearch) {
+                clearAlertSearch.hidden = searchValue.length === 0;
+            }
+
         }
 
-        // SEARCH ALERTS
+        // REAL-TIME SEARCH WHILE TYPING
 
         alertSearch.addEventListener(
             "input",
@@ -513,7 +514,23 @@ document.addEventListener("DOMContentLoaded", function () {
             filterSecurityAlerts
         );
 
-        // INITIAL ALERT COUNT
+        // CLEAR SEARCH BUTTON
+
+        if (clearAlertSearch) {
+
+            clearAlertSearch.addEventListener("click", function () {
+
+                alertSearch.value = "";
+
+                filterSecurityAlerts();
+
+                alertSearch.focus();
+
+            });
+
+        }
+
+        // INITIAL ALERT COUNT AND FILTER STATE
 
         filterSecurityAlerts();
 
