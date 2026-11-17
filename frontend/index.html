@@ -388,6 +388,70 @@
             </div>
         </section>
 
+
+        <!-- TASK 13 - ALERT DETAILS PAGE -->
+        <section class="page-section" id="alertDetails" hidden>
+
+            <div class="alert-details-header">
+                <div>
+                    <h2>Alert Details</h2>
+                    <p>Review the security event and investigation information.</p>
+                </div>
+
+                <button type="button" id="backToAlerts" class="back-alert-button">
+                    &larr; Back to Alerts
+                </button>
+            </div>
+
+            <div class="alert-details-card">
+                <div class="alert-details-title">
+                    <div>
+                        <span class="details-label">ALERT INFORMATION</span>
+                        <h3 id="detailAlertTitle">Select an alert</h3>
+                        <p id="detailAlertId">Alert ID: -</p>
+                    </div>
+
+                    <span id="detailSeverity" class="severity">-</span>
+                </div>
+
+                <div class="alert-details-grid">
+                    <div class="detail-item">
+                        <span>Source IP Address</span>
+                        <strong id="detailSourceIP">-</strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Destination IP Address</span>
+                        <strong id="detailDestinationIP">-</strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Detection Time</span>
+                        <strong id="detailTimestamp">-</strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Current Status</span>
+                        <strong id="detailStatus">-</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert-details-card">
+                <h3>Event Description</h3>
+                <p id="detailDescription">No alert selected.</p>
+            </div>
+
+            <div class="alert-details-card">
+                <h3>Recommended Investigation Steps</h3>
+                <ol id="detailInvestigationSteps">
+                    <li>Select an alert to view investigation steps.</li>
+                </ol>
+            </div>
+
+            <p class="demo-data-note">DEMO DATA - NOT LIVE</p>
+
+        </section>
         <!-- PAGE 05 - AI INVESTIGATION -->
         <section class="page-section" id="investigation" hidden>
             <h2>AI Investigation</h2>

@@ -23,7 +23,8 @@ document.addEventListener("DOMContentLoaded", function () {
         incidents: "Incident Management",
         response: "Response Center",
         reports: "Reports",
-        settings: "Settings"
+        settings: "Settings",
+        alertDetails: "Alert Details"
     };
 
     function showPage(pageName) {
@@ -666,6 +667,171 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ======================================
+
+// ======================================
+// TASK 13 - ALERT DETAILS PAGE
+// ======================================
+
+const alertDetailsData = {
+    "ALT-001": {
+        destinationIP: "192.168.1.1",
+        description:
+            "Multiple failed login attempts were detected from the same source IP address. This activity may indicate a brute-force login attempt.",
+        steps: [
+            "Review the failed login events and identify the targeted account.",
+            "Check whether any successful login occurred after the failures.",
+            "Investigate the source IP address and related activity.",
+            "Check for similar login attempts against other accounts.",
+            "Escalate the incident if suspicious activity is confirmed."
+        ]
+    },
+
+    "ALT-002": {
+        destinationIP: "192.168.1.50",
+        description:
+            "Suspicious PowerShell execution was detected. Review the command and process activity to determine whether it is legitimate or malicious.",
+        steps: [
+            "Review the PowerShell command-line arguments.",
+            "Identify the parent process and executing user.",
+            "Check related endpoint security alerts.",
+            "Look for suspicious network connections or downloaded files.",
+            "Escalate if malicious execution is confirmed."
+        ]
+    },
+
+    "ALT-003": {
+        destinationIP: "10.0.0.1",
+        description:
+            "Port scanning activity was detected from the source IP. This may indicate network reconnaissance against internal systems.",
+        steps: [
+            "Identify the destination host and scanned ports.",
+            "Review firewall logs for blocked and allowed connections.",
+            "Check whether the source IP has generated other alerts.",
+            "Determine whether the scanning activity was authorized.",
+            "Escalate any unauthorized reconnaissance activity."
+        ]
+    },
+
+    "ALT-004": {
+        destinationIP: "192.168.1.1",
+        description:
+            "An unusual network connection was detected. Review the destination and connection history to determine whether the activity is expected.",
+        steps: [
+            "Review the destination IP and connection details.",
+            "Check DNS and network logs for related activity.",
+            "Identify the process responsible for the connection.",
+            "Compare the activity with normal network behavior.",
+            "Document the investigation findings."
+        ]
+    }
+};
+
+const detailsTableBody =
+    document.getElementById("alertsTableBody");
+
+function openAlertDetails(row) {
+    const alertId = row.dataset.alertId;
+    const details = alertDetailsData[alertId];
+
+    if (!details) {
+        return;
+    }
+
+    const cells = row.querySelectorAll("td");
+
+    const alertTitle = cells[0]?.textContent.trim() || "Unknown Alert";
+    const sourceIP = cells[1]?.textContent.trim() || "Unknown";
+    const severity = cells[2]?.textContent.trim() || "Unknown";
+    const timestamp = cells[3]?.textContent.trim() || "Unknown";
+    const status = cells[4]?.textContent.trim() || "Unknown";
+
+    document.getElementById("detailAlertTitle").textContent = alertTitle;
+    document.getElementById("detailAlertId").textContent =
+        `Alert ID: ${alertId}`;
+
+    document.getElementById("detailSourceIP").textContent = sourceIP;
+    document.getElementById("detailDestinationIP").textContent =
+        details.destinationIP;
+
+    document.getElementById("detailTimestamp").textContent = timestamp;
+
+    const statusElement = document.getElementById("detailStatus");
+    statusElement.textContent = status;
+    statusElement.className = `status ${status.toLowerCase()}`;
+
+    const severityElement = document.getElementById("detailSeverity");
+    severityElement.textContent = severity;
+    severityElement.className = `severity ${severity.toLowerCase()}`;
+
+    document.getElementById("detailDescription").textContent =
+        details.description;
+
+    const stepsList =
+        document.getElementById("detailInvestigationSteps");
+
+    stepsList.replaceChildren();
+
+    details.steps.forEach(step => {
+        const listItem = document.createElement("li");
+        listItem.textContent = step;
+        stepsList.appendChild(listItem);
+    });
+
+    showPage("alertDetails");
+}
+
+if (detailsTableBody) {
+
+    const detailRows =
+        detailsTableBody.querySelectorAll("tr");
+
+    detailRows.forEach((row, index) => {
+        row.dataset.alertId =
+            `ALT-${String(index + 1).padStart(3, "0")}`;
+
+        row.tabIndex = 0;
+        row.style.cursor = "pointer";
+
+        row.setAttribute(
+            "aria-label",
+            `View details for alert ALT-${String(index + 1).padStart(3, "0")}`
+        );
+    });
+
+    detailsTableBody.addEventListener("click", event => {
+        const row = event.target.closest("tr[data-alert-id]");
+
+        if (row) {
+            openAlertDetails(row);
+        }
+    });
+
+    detailsTableBody.addEventListener("keydown", event => {
+        if (
+            (event.key === "Enter" || event.key === " ") &&
+            event.target.matches("tr[data-alert-id]")
+        ) {
+            event.preventDefault();
+            openAlertDetails(event.target);
+        }
+    });
+}
+
+const backToAlertsButton =
+    document.getElementById("backToAlerts");
+
+if (backToAlertsButton) {
+    backToAlertsButton.addEventListener("click", () => {
+
+        showPage("overview");
+
+        document.getElementById("alertsTable")?.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+
+    });
+}
     // DASHBOARD INITIALIZATION COMPLETE
     // ======================================
 
