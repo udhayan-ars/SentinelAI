@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS logs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    source TEXT NOT NULL,
+    level TEXT NOT NULL,
+    message TEXT NOT NULL,
+    timestamp TEXT NOT NULL
+);
