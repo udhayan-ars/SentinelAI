@@ -4,58 +4,72 @@ from flask_cors import CORS
 import sqlite3
 from pathlib import Path
 
-from config import DEBUG, HOST, PORT, DATABASE_PATH
+from config import Config, DATABASE_PATH
+from extensions import db
+import models
+
+from routes.alerts import alerts_bp
 from routes.logs import logs_bp
 
-app = Flask(__name__)
 
-CORS(app)
+def create_app(test_config=None):
+    app = Flask(__name__)
 
-# Database schema file path
-BASE_DIR = Path(__file__).resolve().parent.parent
-SCHEMA_PATH = BASE_DIR / "database" / "schema.sql"
+    app.config.from_object(Config)
 
+    if test_config is not None:
+        app.config.update(test_config)
 
-# Initialize SQLite Database
-def initialize_database():
-    DATABASE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    CORS(app)
+    db.init_app(app)
 
-    connection = sqlite3.connect(DATABASE_PATH)
+    app.register_blueprint(alerts_bp)
+    app.register_blueprint(logs_bp)
 
-    with open(SCHEMA_PATH, "r", encoding="utf-8") as schema_file:
-        connection.executescript(schema_file.read())
+    with app.app_context():
+        db.create_all()
 
-    connection.close()
+        DATABASE_PATH.parent.mkdir(parents=True, exist_ok=True)
 
-    print("SentinelAI database initialized successfully!")
+        schema_path = (
+            Path(__file__).resolve().parent.parent
+            / "database"
+            / "schema.sql"
+        )
 
+        connection = sqlite3.connect(DATABASE_PATH)
 
-# Initialize database when application starts
-initialize_database()
+        with open(schema_path, "r", encoding="utf-8") as schema_file:
+            connection.executescript(schema_file.read())
 
-# Register log collection API
-app.register_blueprint(logs_bp)
+        connection.close()
 
+    @app.route("/", methods=["GET"])
+    def home():
+        return jsonify({
+            "project": "SentinelAI",
+            "module": "Backend API",
+            "message": "SentinelAI Backend is running",
+            "status": "success"
+        }), 200
 
-@app.route("/", methods=["GET"])
-def home():
-    return jsonify({
-        "message": "Welcome to SentinelAI",
-        "status": "Backend is running"
-    })
+    @app.route("/api/health", methods=["GET"])
+    @app.route("/health", methods=["GET"])
+    def health():
+        return jsonify({
+            "status": "healthy",
+            "service": "SentinelAI Backend",
+            "database": "connected"
+        }), 200
 
-
-@app.route("/health", methods=["GET"])
-def health_check():
-    return jsonify({
-        "status": "healthy",
-        "service": "SentinelAI Backend"
-    })
+    return app
 
 
 if __name__ == "__main__":
+    app = create_app()
+
     app.run(
-        host=HOST,
-        port=PORT,
-        debug=DEBUG
+        host=app.config.get("HOST", "127.0.0.1"),
+        port=app.config.get("PORT", 5000),
+        debug=app.config.get("DEBUG", True)
     )
