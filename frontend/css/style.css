@@ -469,3 +469,53 @@ tbody tr:last-child td {
         gap: 8px;
     }
 }
+
+/* =====================================
+   SIDEBAR NAVIGATION PAGE STYLES
+===================================== */
+
+.page-section[hidden] {
+    display: none !important;
+}
+
+.page-section:not([hidden]) {
+    animation: pageFadeIn 0.25s ease-in-out;
+}
+
+.page-section > h2 {
+    font-size: 21px;
+    margin-top: 28px;
+    margin-bottom: 10px;
+}
+
+.page-section > p {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 22px;
+}
+
+.placeholder-panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 35px 25px;
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+@keyframes pageFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
