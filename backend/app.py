@@ -8,6 +8,8 @@ import models
 
 from routes.alerts import alerts_bp
 from routes.incidents import incidents_bp
+from routes.analyst_actions import analyst_actions_bp
+
 
 def create_app(test_config=None):
     app = Flask(__name__)
@@ -28,6 +30,7 @@ def create_app(test_config=None):
     # Register API blueprints
     app.register_blueprint(alerts_bp)
     app.register_blueprint(incidents_bp)
+    app.register_blueprint(analyst_actions_bp)
 
     # Create database tables
     with app.app_context():
