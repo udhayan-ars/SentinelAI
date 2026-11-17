@@ -9,6 +9,8 @@ from extensions import db
 import models
 
 from routes.alerts import alerts_bp
+from routes.incidents import incidents_bp
+from routes.analyst_actions import analyst_actions_bp
 from routes.logs import logs_bp
 
 
@@ -24,6 +26,8 @@ def create_app(test_config=None):
     db.init_app(app)
 
     app.register_blueprint(alerts_bp)
+    app.register_blueprint(incidents_bp)
+    app.register_blueprint(analyst_actions_bp)
     app.register_blueprint(logs_bp)
 
     with app.app_context():
