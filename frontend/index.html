@@ -173,29 +173,25 @@
                             <p>Security events detected over time</p>
                         </div>
 
-                        <!-- TIME FILTERS -->
                         <div class="chart-filters"
                              role="group"
                              aria-label="Select chart time period">
 
-                            <button
-                                class="chart-filter active"
+                            <button class="chart-filter active"
                                 data-period="24h"
                                 type="button"
                                 aria-pressed="true">
                                 24 Hours
                             </button>
 
-                            <button
-                                class="chart-filter"
+                            <button class="chart-filter"
                                 data-period="7d"
                                 type="button"
                                 aria-pressed="false">
                                 7 Days
                             </button>
 
-                            <button
-                                class="chart-filter"
+                            <button class="chart-filter"
                                 data-period="30d"
                                 type="button"
                                 aria-pressed="false">
@@ -241,13 +237,51 @@
                         <h3>Recent Security Alerts</h3>
                         <p>Latest detected security activities</p>
                     </div>
+
                     <a href="#alerts" class="view-all" data-page="alerts">
                         View All Alerts →
                     </a>
                 </div>
 
+                <!-- ALERT TABLE CONTROLS -->
+                <div class="alerts-toolbar">
+
+                    <div class="alerts-search">
+                        <span class="search-icon">⌕</span>
+                        <input
+                            type="search"
+                            id="alertSearch"
+                            placeholder="Search alert type or source IP..."
+                            aria-label="Search security alerts">
+                    </div>
+
+                    <div class="alerts-filter">
+                        <label for="severityFilter">Severity:</label>
+
+                        <select id="severityFilter" aria-label="Filter alerts by severity">
+                            <option value="all">All Severities</option>
+                            <option value="critical">Critical</option>
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <!-- ALERT COUNT -->
+                <div class="alerts-table-info">
+                    <span id="alertCount" aria-live="polite">
+                        Showing 4 alerts
+                    </span>
+                    <span>DEMO RECORDS</span>
+                </div>
+
+                <!-- ALERT TABLE -->
                 <div class="table-wrapper">
-                    <table>
+
+                    <table id="alertsTable">
+
                         <thead>
                             <tr>
                                 <th>ALERT TYPE</th>
@@ -258,40 +292,67 @@
                             </tr>
                         </thead>
 
-                        <tbody>
-                            <tr>
+                        <tbody id="alertsTableBody">
+
+                            <tr data-severity="critical">
                                 <td>Multiple Failed Login Attempts</td>
                                 <td>192.168.1.105</td>
-                                <td><span class="severity critical">Critical</span></td>
+                                <td>
+                                    <span class="severity critical">Critical</span>
+                                </td>
                                 <td>10:42:15 AM</td>
-                                <td><span class="status open">Open</span></td>
+                                <td>
+                                    <span class="status open">Open</span>
+                                </td>
                             </tr>
 
-                            <tr>
+                            <tr data-severity="high">
                                 <td>Suspicious PowerShell Execution</td>
                                 <td>192.168.1.110</td>
-                                <td><span class="severity high">High</span></td>
+                                <td>
+                                    <span class="severity high">High</span>
+                                </td>
                                 <td>10:35:20 AM</td>
-                                <td><span class="status investigating">Investigating</span></td>
+                                <td>
+                                    <span class="status investigating">Investigating</span>
+                                </td>
                             </tr>
 
-                            <tr>
+                            <tr data-severity="medium">
                                 <td>Port Scanning Activity</td>
                                 <td>10.0.0.25</td>
-                                <td><span class="severity medium">Medium</span></td>
+                                <td>
+                                    <span class="severity medium">Medium</span>
+                                </td>
                                 <td>10:28:45 AM</td>
-                                <td><span class="status open">Open</span></td>
+                                <td>
+                                    <span class="status open">Open</span>
+                                </td>
                             </tr>
 
-                            <tr>
+                            <tr data-severity="low">
                                 <td>Unusual Network Connection</td>
                                 <td>192.168.1.120</td>
-                                <td><span class="severity low">Low</span></td>
+                                <td>
+                                    <span class="severity low">Low</span>
+                                </td>
                                 <td>10:15:30 AM</td>
-                                <td><span class="status resolved">Resolved</span></td>
+                                <td>
+                                    <span class="status resolved">Resolved</span>
+                                </td>
                             </tr>
+
                         </tbody>
+
                     </table>
+
+                    <!-- NO RESULTS MESSAGE -->
+                    <div id="noAlertsMessage" class="no-alerts-message" hidden>
+                        <span>⌕</span>
+                        <p>No matching security alerts found.</p>
+                        <small>Try changing your search or severity filter.</small>
+                    </div>
+
                 </div>
 
                 <p class="chart-data-note">SAMPLE ALERT RECORDS · NOT LIVE</p>

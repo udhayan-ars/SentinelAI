@@ -1015,3 +1015,287 @@ tbody tr:last-child td {
     }
 
 }
+
+/* ==========================================
+   TASK 11 - SECURITY ALERTS TABLE TOOLBAR
+========================================== */
+
+.alerts-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin: 20px 0 15px;
+    flex-wrap: wrap;
+}
+
+/* ALERT SEARCH */
+
+.alerts-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 320px;
+    max-width: 100%;
+    height: 40px;
+    padding: 0 12px;
+    background: #0b1728;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.alerts-search:focus-within {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.12);
+}
+
+.alerts-search .search-icon {
+    font-size: 19px;
+    flex-shrink: 0;
+}
+
+.alerts-search input {
+    width: 100%;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-size: 12px;
+}
+
+.alerts-search input::placeholder {
+    color: var(--muted);
+}
+
+/* SEVERITY FILTER */
+
+.alerts-filter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.alerts-filter label {
+    color: var(--muted);
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.alerts-filter select {
+    min-width: 145px;
+    height: 40px;
+    padding: 0 12px;
+    background: #0b1728;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 11px;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.alerts-filter select:hover {
+    border-color: #365578;
+}
+
+.alerts-filter select:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.12);
+}
+
+.alerts-filter select option {
+    background: var(--panel);
+    color: var(--text);
+}
+
+/* ALERT TABLE INFORMATION */
+
+.alerts-table-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.alerts-table-info span:last-child {
+    color: #fbbf24;
+    font-size: 9px;
+    letter-spacing: 1px;
+}
+
+/* ==========================================
+   TASK 11 - TABLE ENHANCEMENTS
+========================================== */
+
+#alertsTable {
+    min-width: 650px;
+}
+
+#alertsTable thead {
+    background: #0c192b;
+}
+
+#alertsTable th {
+    white-space: nowrap;
+}
+
+#alertsTable td {
+    transition: color 0.2s ease;
+}
+
+#alertsTable tbody tr {
+    transition: background 0.2s ease;
+}
+
+#alertsTable tbody tr:hover {
+    background: #192b43;
+}
+
+#alertsTable tbody tr:hover td {
+    color: #ffffff;
+}
+
+/* SEVERITY BADGES */
+
+#alertsTable .severity {
+    min-width: 68px;
+    text-align: center;
+    font-weight: 600;
+    border: 1px solid transparent;
+    letter-spacing: 0.2px;
+}
+
+#alertsTable .severity.critical {
+    color: #fb8585;
+    background: rgba(239, 68, 68, 0.12);
+    border-color: rgba(239, 68, 68, 0.25);
+}
+
+#alertsTable .severity.high {
+    color: #fbad65;
+    background: rgba(249, 115, 22, 0.12);
+    border-color: rgba(249, 115, 22, 0.25);
+}
+
+#alertsTable .severity.medium {
+    color: #facc65;
+    background: rgba(234, 179, 8, 0.12);
+    border-color: rgba(234, 179, 8, 0.25);
+}
+
+#alertsTable .severity.low {
+    color: #72c6fa;
+    background: rgba(59, 130, 246, 0.12);
+    border-color: rgba(59, 130, 246, 0.25);
+}
+
+/* STATUS BADGES */
+
+#alertsTable .status {
+    min-width: 85px;
+    text-align: center;
+    font-weight: 600;
+    border: 1px solid transparent;
+}
+
+#alertsTable .status.open {
+    border-color: rgba(239, 68, 68, 0.2);
+}
+
+#alertsTable .status.investigating {
+    border-color: rgba(234, 179, 8, 0.2);
+}
+
+#alertsTable .status.resolved {
+    border-color: rgba(34, 197, 94, 0.2);
+}
+
+/* ==========================================
+   TASK 11 - NO SEARCH RESULTS
+========================================== */
+
+.no-alerts-message {
+    padding: 35px 15px;
+    text-align: center;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+}
+
+.no-alerts-message[hidden] {
+    display: none !important;
+}
+
+.no-alerts-message > span {
+    display: block;
+    color: #60a5fa;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.no-alerts-message p {
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 7px;
+}
+
+.no-alerts-message small {
+    font-size: 11px;
+    color: var(--muted);
+}
+
+/* ==========================================
+   TASK 11 - RESPONSIVE ALERT TABLE
+========================================== */
+
+@media (max-width: 700px) {
+
+    .alerts-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .alerts-search {
+        width: 100%;
+    }
+
+    .alerts-filter {
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .alerts-filter select {
+        flex: 1;
+    }
+
+    .alerts-table-info {
+        font-size: 9px;
+    }
+
+    #alertsTable {
+        min-width: 600px;
+    }
+
+}
+
+@media (max-width: 450px) {
+
+    .alerts-toolbar {
+        gap: 12px;
+    }
+
+    .alerts-filter select {
+        min-width: 0;
+    }
+
+    .alerts-table-info span:last-child {
+        font-size: 8px;
+    }
+
+}

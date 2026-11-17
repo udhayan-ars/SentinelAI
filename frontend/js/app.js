@@ -71,7 +71,6 @@ document.addEventListener("DOMContentLoaded", function () {
         link.addEventListener("click", function (event) {
 
             event.preventDefault();
-
             showPage(this.dataset.page);
 
         });
@@ -83,7 +82,6 @@ document.addEventListener("DOMContentLoaded", function () {
         link.addEventListener("click", function (event) {
 
             event.preventDefault();
-
             showPage(this.dataset.page);
 
         });
@@ -136,7 +134,6 @@ document.addEventListener("DOMContentLoaded", function () {
             if (matchingLink) {
 
                 showPage(matchingLink.dataset.page);
-
                 this.value = "";
 
             } else {
@@ -160,9 +157,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (notificationButton) {
 
         notificationButton.addEventListener("click", function () {
-
             showPage("alerts");
-
         });
 
     }
@@ -170,85 +165,40 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ======================================
     // TASK 10 - SECURITY EVENT ACTIVITY CHART
+    // WITH INTERACTIVE TIME FILTERS
     // ======================================
 
     const eventsCanvas = document.getElementById("eventsChart");
 
     if (eventsCanvas && typeof Chart !== "undefined") {
 
-        // DEMO DATA - NOT LIVE
-
-        const eventChartData = {
+        const chartPeriods = {
 
             "24h": {
-
                 labels: [
-                    "00:00",
-                    "04:00",
-                    "08:00",
-                    "12:00",
-                    "16:00",
-                    "20:00",
-                    "24:00"
+                    "12 AM", "4 AM", "8 AM",
+                    "12 PM", "4 PM", "8 PM"
                 ],
-
-                data: [
-                    120,
-                    85,
-                    210,
-                    340,
-                    280,
-                    410,
-                    190
-                ]
-
+                data: [120, 180, 350, 280, 420, 310]
             },
 
             "7d": {
-
                 labels: [
-                    "Mon",
-                    "Tue",
-                    "Wed",
-                    "Thu",
-                    "Fri",
-                    "Sat",
-                    "Sun"
+                    "Mon", "Tue", "Wed",
+                    "Thu", "Fri", "Sat", "Sun"
                 ],
-
-                data: [
-                    1200,
-                    1900,
-                    1500,
-                    2400,
-                    1800,
-                    2800,
-                    2600
-                ]
-
+                data: [1200, 1900, 1500, 2400, 1800, 2800, 2600]
             },
 
             "30d": {
-
                 labels: [
-                    "Week 1",
-                    "Week 2",
-                    "Week 3",
-                    "Week 4"
+                    "Week 1", "Week 2",
+                    "Week 3", "Week 4"
                 ],
-
-                data: [
-                    8500,
-                    11200,
-                    9700,
-                    14500
-                ]
-
+                data: [8500, 11200, 9800, 14500]
             }
 
         };
-
-        let currentPeriod = "24h";
 
         const eventsChart = new Chart(eventsCanvas, {
 
@@ -256,32 +206,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
             data: {
 
-                labels: eventChartData[currentPeriod].labels,
+                labels: chartPeriods["24h"].labels,
 
                 datasets: [{
-
                     label: "Security Events",
 
-                    data: eventChartData[currentPeriod].data,
+                    data: chartPeriods["24h"].data,
 
                     borderColor: "#3b82f6",
-
-                    backgroundColor: "rgba(59, 130, 246, 0.13)",
-
+                    backgroundColor: "rgba(59, 130, 246, 0.12)",
                     fill: true,
-
                     tension: 0.4,
-
-                    pointRadius: 4,
-
-                    pointHoverRadius: 7,
-
-                    pointBackgroundColor: "#22d3ee",
-
-                    pointBorderColor: "#101d30",
-
-                    pointBorderWidth: 2
-
+                    pointRadius: 3,
+                    pointBackgroundColor: "#22d3ee"
                 }]
 
             },
@@ -289,53 +226,17 @@ document.addEventListener("DOMContentLoaded", function () {
             options: {
 
                 responsive: true,
-
                 maintainAspectRatio: false,
-
-                interaction: {
-                    intersect: false,
-                    mode: "index"
-                },
 
                 plugins: {
 
                     legend: {
-
                         labels: {
-
-                            color: "#cbd5e1",
-
-                            usePointStyle: true,
-
-                            padding: 15
-
-                        }
-
-                    },
-
-                    tooltip: {
-
-                        backgroundColor: "#14243a",
-
-                        titleColor: "#ffffff",
-
-                        bodyColor: "#cbd5e1",
-
-                        borderColor: "#3b82f6",
-
-                        borderWidth: 1,
-
-                        callbacks: {
-
-                            label: function (context) {
-
-                                return " Events: " +
-                                    context.parsed.y.toLocaleString("en-US");
-
+                            color: "#9aabc1",
+                            font: {
+                                size: 10
                             }
-
                         }
-
                     }
 
                 },
@@ -343,29 +244,22 @@ document.addEventListener("DOMContentLoaded", function () {
                 scales: {
 
                     x: {
-
                         ticks: {
                             color: "#8192a9"
                         },
-
                         grid: {
                             color: "rgba(120, 145, 175, 0.08)"
                         }
-
                     },
 
                     y: {
-
                         beginAtZero: true,
-
                         ticks: {
                             color: "#8192a9"
                         },
-
                         grid: {
                             color: "rgba(120, 145, 175, 0.08)"
                         }
-
                     }
 
                 }
@@ -373,11 +267,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
         });
-
-
-        // ======================================
-        // CHART PERIOD FILTER FUNCTIONALITY
-        // ======================================
 
         const chartFilterButtons =
             document.querySelectorAll(".chart-filter");
@@ -388,44 +277,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const selectedPeriod = this.dataset.period;
 
-                if (!eventChartData[selectedPeriod]) {
+                const periodData = chartPeriods[selectedPeriod];
+
+                if (!periodData) {
                     return;
                 }
 
-                currentPeriod = selectedPeriod;
-
-                // Update active button state
-
-                chartFilterButtons.forEach(filter => {
-
-                    filter.classList.remove("active");
-
-                    filter.setAttribute("aria-pressed", "false");
-
-                });
-
-                this.classList.add("active");
-
-                this.setAttribute("aria-pressed", "true");
-
-                // Update chart labels
-
-                eventsChart.data.labels =
-                    eventChartData[currentPeriod].labels;
-
-                // Update chart data
+                eventsChart.data.labels = periodData.labels;
 
                 eventsChart.data.datasets[0].data =
-                    eventChartData[currentPeriod].data;
-
-                // Refresh chart
+                    periodData.data;
 
                 eventsChart.update();
 
-                console.log(
-                    "Security event chart updated:",
-                    currentPeriod
-                );
+                chartFilterButtons.forEach(filter => {
+
+                    const isActive =
+                        filter === this;
+
+                    filter.classList.toggle("active", isActive);
+
+                    filter.setAttribute(
+                        "aria-pressed",
+                        String(isActive)
+                    );
+
+                });
 
             });
 
@@ -468,9 +345,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     ],
 
                     borderColor: "#101d30",
-
                     borderWidth: 4,
-
                     hoverOffset: 10
 
                 }]
@@ -480,9 +355,7 @@ document.addEventListener("DOMContentLoaded", function () {
             options: {
 
                 responsive: true,
-
                 maintainAspectRatio: false,
-
                 cutout: "68%",
 
                 plugins: {
@@ -494,11 +367,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         labels: {
 
                             color: "#cbd5e1",
-
                             padding: 18,
-
                             usePointStyle: true,
-
                             pointStyle: "circle",
 
                             font: {
@@ -539,6 +409,113 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
         });
+
+    }
+
+
+    // ======================================
+    // TASK 11 - SECURITY ALERT SEARCH
+    // ======================================
+
+    const alertSearch =
+        document.getElementById("alertSearch");
+
+    const severityFilter =
+        document.getElementById("severityFilter");
+
+    const alertsTableBody =
+        document.getElementById("alertsTableBody");
+
+    const alertCount =
+        document.getElementById("alertCount");
+
+    const noAlertsMessage =
+        document.getElementById("noAlertsMessage");
+
+    const alertsTable =
+        document.getElementById("alertsTable");
+
+    if (
+        alertSearch &&
+        severityFilter &&
+        alertsTableBody &&
+        alertCount &&
+        noAlertsMessage &&
+        alertsTable
+    ) {
+
+        const alertRows =
+            Array.from(alertsTableBody.querySelectorAll("tr"));
+
+        const totalAlertCount = alertRows.length;
+
+        function filterSecurityAlerts() {
+
+            const searchValue =
+                alertSearch.value.trim().toLowerCase();
+
+            const selectedSeverity =
+                severityFilter.value.toLowerCase();
+
+            let visibleCount = 0;
+
+            alertRows.forEach(row => {
+
+                const alertText =
+                    row.textContent.toLowerCase();
+
+                const rowSeverity =
+                    row.dataset.severity.toLowerCase();
+
+                const matchesSearch =
+                    alertText.includes(searchValue);
+
+                const matchesSeverity =
+                    selectedSeverity === "all" ||
+                    rowSeverity === selectedSeverity;
+
+                const shouldDisplay =
+                    matchesSearch && matchesSeverity;
+
+                row.hidden = !shouldDisplay;
+
+                if (shouldDisplay) {
+                    visibleCount++;
+                }
+
+            });
+
+            // UPDATE ALERT COUNT
+
+            alertCount.textContent =
+                `Showing ${visibleCount} of ${totalAlertCount} alerts`;
+
+            // SHOW OR HIDE NO RESULTS MESSAGE
+
+            const noResults = visibleCount === 0;
+
+            noAlertsMessage.hidden = !noResults;
+            alertsTable.hidden = noResults;
+
+        }
+
+        // SEARCH ALERTS
+
+        alertSearch.addEventListener(
+            "input",
+            filterSecurityAlerts
+        );
+
+        // FILTER BY SEVERITY
+
+        severityFilter.addEventListener(
+            "change",
+            filterSecurityAlerts
+        );
+
+        // INITIAL ALERT COUNT
+
+        filterSecurityAlerts();
 
     }
 
