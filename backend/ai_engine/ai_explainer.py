@@ -5,11 +5,26 @@
 
 def explain_alert(alert):
 
-    alert_type = alert.get("alert_type", "UNKNOWN")
+    alert_type = str(
+        alert.get("alert_type", "UNKNOWN")
+    ).strip().upper()
+
+    # Normalize alert type names from threat detection
+    alert_type_aliases = {
+        "BRUTE_FORCE_ATTACK": "BRUTE_FORCE",
+        "MALWARE_DETECTED": "MALWARE"
+    }
+
+    lookup_type = alert_type_aliases.get(
+        alert_type, alert_type
+    )
+
     severity = alert.get("severity", "MEDIUM")
     risk_score = alert.get("risk_score", 0)
     source_ip = alert.get("source_ip", "Unknown")
-    description = alert.get("description", "No description available")
+    description = alert.get(
+        "description", "No description available"
+    )
 
     explanations = {
         "BRUTE_FORCE": {
@@ -37,7 +52,7 @@ def explain_alert(alert):
         }
     }
 
-    details = explanations.get(alert_type, {
+    details = explanations.get(lookup_type, {
         "meaning": "An unusual security event was detected.",
         "impact": "The activity may indicate a potential security threat.",
         "recommendation": "Review the associated logs and investigate the event."
@@ -64,7 +79,7 @@ def explain_alert(alert):
 if __name__ == "__main__":
 
     sample_alert = {
-        "alert_type": "BRUTE_FORCE",
+        "alert_type": "BRUTE_FORCE_ATTACK",
         "severity": "HIGH",
         "risk_score": 85,
         "source_ip": "192.168.1.100",
