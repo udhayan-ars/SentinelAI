@@ -7,7 +7,7 @@ from extensions import db
 import models
 
 from routes.alerts import alerts_bp
-
+from routes.incidents import incidents_bp
 
 def create_app(test_config=None):
     app = Flask(__name__)
@@ -27,6 +27,7 @@ def create_app(test_config=None):
 
     # Register API blueprints
     app.register_blueprint(alerts_bp)
+    app.register_blueprint(incidents_bp)
 
     # Create database tables
     with app.app_context():
