@@ -5,548 +5,403 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>SentinelAI | Security Operations Center</title>
-
     <link rel="stylesheet" href="css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
 
-    <div class="app-container">
+<div class="app-container">
 
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
 
-            <div class="brand">
-                <div class="brand-icon">S</div>
+        <div class="brand">
+            <div class="brand-icon">S</div>
+            <div>
+                <h2>SENTINEL<span>AI</span></h2>
+                <p>AI-POWERED SOC</p>
+            </div>
+        </div>
+
+        <p class="nav-heading">MAIN MENU</p>
+
+        <nav class="navigation">
+            <a href="#overview" class="nav-link active" data-page="overview"><span>◈</span> Overview</a>
+            <a href="#monitoring" class="nav-link" data-page="monitoring"><span>◉</span> Live Monitoring</a>
+            <a href="#events" class="nav-link" data-page="events"><span>▤</span> Security Events</a>
+            <a href="#alerts" class="nav-link" data-page="alerts"><span>⚠</span> Threat Alerts</a>
+            <a href="#investigation" class="nav-link" data-page="investigation"><span>⌕</span> AI Investigation</a>
+            <a href="#mitre" class="nav-link" data-page="mitre"><span>▦</span> MITRE ATT&CK</a>
+            <a href="#timeline" class="nav-link" data-page="timeline"><span>⌁</span> Attack Timeline</a>
+            <a href="#incidents" class="nav-link" data-page="incidents"><span>◷</span> Incident Management</a>
+            <a href="#response" class="nav-link" data-page="response"><span>⚡</span> Response Center</a>
+            <a href="#reports" class="nav-link" data-page="reports"><span>▧</span> Reports</a>
+            <a href="#settings" class="nav-link" data-page="settings"><span>⚙</span> Settings</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="analyst-profile">
+                <div class="avatar">SA</div>
                 <div>
-                    <h2>SENTINEL<span>AI</span></h2>
-                    <p>AI-POWERED SOC</p>
+                    <strong>Security Analyst</strong>
+                    <small>SOC Analyst L1</small>
                 </div>
             </div>
+        </div>
 
-            <p class="nav-heading">WORKSPACE</p>
+    </aside>
 
-            <nav class="navigation">
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
 
-                <a href="#overview" class="nav-link active" data-page="overview">
-                    <span>▦</span> Overview
-                </a>
+        <!-- TOP NAVIGATION -->
+        <header class="topbar">
 
-                <a href="#monitoring" class="nav-link" data-page="monitoring">
-                    <span>◉</span> Live Monitoring
-                </a>
+            <div class="topbar-heading">
+                <div class="breadcrumb">
+                    SENTINELAI / <span id="breadcrumbPage">Security Overview</span>
+                </div>
+                <h1 id="pageTitle">Security Overview</h1>
+            </div>
 
-                <a href="#events" class="nav-link" data-page="events">
-                    <span>▤</span> Security Events
-                </a>
+            <div class="topbar-right">
 
-                <a href="#alerts" class="nav-link" data-page="alerts">
-                    <span>⚠</span> Threat Alerts
-                </a>
+                <div class="topbar-search">
+                    <span class="search-icon">⌕</span>
+                    <input type="text" id="topbarSearch" placeholder="Search dashboard...">
+                    <span class="search-shortcut">Enter</span>
+                </div>
 
-                <a href="#investigation" class="nav-link" data-page="investigation">
-                    <span>✧</span> AI Investigation
-                </a>
+                <div class="environment">
+                    <span class="status-dot"></span>
+                    LAB ENVIRONMENT
+                </div>
 
-                <a href="#mitre" class="nav-link" data-page="mitre">
-                    <span>⌘</span> MITRE ATT&CK
-                </a>
+                <button class="icon-button notification-button"
+                    id="notificationButton" type="button" title="View alerts">
+                    ♧
+                    <span class="notification-badge">3</span>
+                </button>
 
-                <a href="#timeline" class="nav-link" data-page="timeline">
-                    <span>⌁</span> Attack Timeline
-                </a>
-
-                <a href="#incidents" class="nav-link" data-page="incidents">
-                    <span>▣</span> Incident Management
-                </a>
-
-                <a href="#response" class="nav-link" data-page="response">
-                    <span>⛨</span> Response Center
-                </a>
-
-                <a href="#reports" class="nav-link" data-page="reports">
-                    <span>▧</span> Reports
-                </a>
-
-            </nav>
-
-            <div class="sidebar-bottom">
-
-                <a href="#settings" class="nav-link" data-page="settings">
-                    <span>⚙</span> Settings
-                </a>
-
-                <div class="analyst-profile">
+                <div class="topbar-profile">
                     <div class="avatar">SA</div>
-                    <div>
+                    <div class="profile-details">
                         <strong>Security Analyst</strong>
-                        <small>Analyst Account</small>
+                        <small>Administrator</small>
                     </div>
                 </div>
 
             </div>
+        </header>
 
-        </aside>
+        <!-- PAGE 01 - OVERVIEW -->
+        <section class="page-section" id="overview">
 
-
-        <!-- MAIN CONTENT -->
-        <main class="main-content">
-
-            <!-- TOPBAR -->
-            <header class="topbar">
-
-                <div class="topbar-heading">
-
-                    <p class="breadcrumb">
-                        Workspace / <span id="breadcrumbPage">Overview</span>
-                    </p>
-
-                    <h1 id="pageTitle">Security Overview</h1>
-
+            <div class="welcome-section">
+                <div>
+                    <h2>Security Operations Overview</h2>
+                    <p>Monitor your security environment and investigate potential threats.</p>
                 </div>
+                <span class="sample-label">DEMO DATA · NOT LIVE</span>
+            </div>
 
-                <div class="topbar-right">
+            <!-- DASHBOARD STATISTICS -->
+            <section class="stats-grid">
 
-                    <!-- SEARCH BAR -->
-                    <label class="topbar-search">
-
-                        <span class="search-icon">⌕</span>
-
-                        <input
-                            type="search"
-                            id="topbarSearch"
-                            placeholder="Search dashboard..."
-                            aria-label="Search dashboard pages"
-                        >
-
-                        <span class="search-shortcut">Enter</span>
-
-                    </label>
-
-                    <!-- ENVIRONMENT STATUS -->
-                    <span class="environment">
-                        <span class="status-dot"></span>
-                        LAB ENVIRONMENT
-                    </span>
-
-                    <!-- NOTIFICATIONS -->
-                    <button
-                        class="icon-button notification-button"
-                        id="notificationButton"
-                        type="button"
-                        aria-label="View notifications, 3 alerts"
-                        title="View threat alerts"
-                    >
-                        ♧
-                        <span class="notification-badge">3</span>
-                    </button>
-
-                    <!-- ANALYST PROFILE -->
-                    <div class="topbar-profile">
-
-                        <div class="avatar">SA</div>
-
-                        <div class="profile-details">
-                            <strong>Security Analyst</strong>
-                            <small>Analyst Account</small>
-                        </div>
-
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>Total Events</span>
+                        <span class="stat-icon blue">▤</span>
                     </div>
-
-                </div>
-
-            </header>
-
-
-            <!-- ======================================
-                 OVERVIEW PAGE
-            ======================================= -->
-
-            <section id="overview" class="page-section">
-
-                <section class="welcome-section">
-
-                    <div>
-                        <h2>Security Operations Center</h2>
-                        <p>
-                            Monitor security activity, investigate threats,
-                            and manage incidents.
-                        </p>
+                    <h2 id="totalEvents">0</h2>
+                    <div class="stat-bottom">
+                        <span class="stat-trend positive">Event Records</span>
+                        <span class="stat-note">Demo statistics</span>
                     </div>
+                </article>
 
-                    <span class="sample-label">DEMO DATA · NOT LIVE</span>
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>Active Alerts</span>
+                        <span class="stat-icon orange">⚠</span>
+                    </div>
+                    <h2 id="activeAlerts">0</h2>
+                    <div class="stat-bottom">
+                        <span class="stat-trend warning">Needs Review</span>
+                        <span class="stat-note">Demo statistics</span>
+                    </div>
+                </article>
 
-                </section>
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>Critical Incidents</span>
+                        <span class="stat-icon red">!</span>
+                    </div>
+                    <h2 id="criticalIncidents">00</h2>
+                    <div class="stat-bottom">
+                        <span class="stat-trend danger">High Priority</span>
+                        <span class="stat-note">Demo statistics</span>
+                    </div>
+                </article>
 
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>System Health</span>
+                        <span class="stat-icon green">⌁</span>
+                    </div>
+                    <h2 id="systemHealthStatus">Operational</h2>
+                    <div class="stat-bottom">
+                        <span class="health-indicator"></span>
+                        <span class="stat-trend positive">UI Available</span>
+                        <span class="stat-note">Demo interface status</span>
+                    </div>
+                </article>
 
-                <!-- STATISTICS CARDS -->
-                <section class="stats-grid">
+            </section>
 
-                    <!-- TOTAL EVENTS -->
-                    <article class="stat-card">
+            <!-- CHARTS -->
+            <section class="charts-grid">
 
-                        <div class="stat-top">
-                            <span>Total Events</span>
-                            <span class="stat-icon blue">▤</span>
-                        </div>
-
-                        <h2 id="totalEvents">12,480</h2>
-
-                        <div class="stat-bottom">
-                            <span class="stat-trend positive">↑ 12.5%</span>
-                            <span class="stat-note">vs previous period</span>
-                        </div>
-
-                    </article>
-
-
-                    <!-- ACTIVE ALERTS -->
-                    <article class="stat-card">
-
-                        <div class="stat-top">
-                            <span>Active Alerts</span>
-                            <span class="stat-icon orange">⚠</span>
-                        </div>
-
-                        <h2 id="activeAlerts">24</h2>
-
-                        <div class="stat-bottom">
-                            <span class="stat-trend warning">● Monitoring</span>
-                            <span class="stat-note">Awaiting review</span>
-                        </div>
-
-                    </article>
-
-
-                    <!-- CRITICAL INCIDENTS -->
-                    <article class="stat-card">
-
-                        <div class="stat-top">
-                            <span>Critical Incidents</span>
-                            <span class="stat-icon red">!</span>
-                        </div>
-
-                        <h2 id="criticalIncidents">03</h2>
-
-                        <div class="stat-bottom">
-                            <span class="stat-trend danger">● Attention</span>
-                            <span class="stat-note">Require investigation</span>
-                        </div>
-
-                    </article>
-
-
-                    <!-- SYSTEM HEALTH -->
-                    <article class="stat-card">
-
-                        <div class="stat-top">
-                            <span>System Health</span>
-                            <span class="stat-icon green">⌁</span>
-                        </div>
-
-                        <h2 id="systemHealthStatus">Operational</h2>
-
-                        <div class="stat-bottom">
-                            <span class="health-indicator"></span>
-                            <span class="stat-trend positive">UI Available</span>
-                            <span class="stat-note">Demo interface status</span>
-                        </div>
-
-                    </article>
-
-                </section>
-                <!-- END STATISTICS CARDS -->
-
-
-                <!-- CHARTS -->
-                <section class="charts-grid">
-
-                    <!-- EVENT ACTIVITY CHART -->
-                    <article class="panel">
-
-                        <div class="panel-heading">
-
-                            <div>
-                                <h3>Security Event Activity</h3>
-                                <p>Sample events over the last 7 days</p>
-                            </div>
-
-                            <span class="panel-tag">7 DAYS</span>
-
-                        </div>
-
-                        <div class="chart-container">
-                            <canvas id="eventsChart"></canvas>
-                        </div>
-
-                    </article>
-
-
-                    <!-- SEVERITY CHART -->
-                    <article class="panel">
-
-                        <div class="panel-heading">
-
-                            <div>
-                                <h3>Alert Severity</h3>
-                                <p>Sample alert distribution</p>
-                            </div>
-
-                            <span class="panel-tag">OVERVIEW</span>
-
-                        </div>
-
-                        <div class="chart-container">
-                            <canvas id="severityChart"></canvas>
-                        </div>
-
-                    </article>
-
-                </section>
-
-
-                <!-- RECENT SECURITY ALERTS -->
-                <section class="panel alerts-panel">
+                <!-- EVENT ACTIVITY CHART -->
+                <article class="panel">
 
                     <div class="panel-heading">
-
                         <div>
-                            <h3>Recent Security Alerts</h3>
-                            <p>
-                                Review suspicious activities detected
-                                in the demo dataset
-                            </p>
+                            <h3>Security Event Activity</h3>
+                            <p>Security events detected over time</p>
                         </div>
 
-                        <a href="#alerts" class="view-all" data-page="alerts">
-                            View all alerts →
-                        </a>
+                        <!-- TIME FILTERS -->
+                        <div class="chart-filters"
+                             role="group"
+                             aria-label="Select chart time period">
 
+                            <button
+                                class="chart-filter active"
+                                data-period="24h"
+                                type="button"
+                                aria-pressed="true">
+                                24 Hours
+                            </button>
+
+                            <button
+                                class="chart-filter"
+                                data-period="7d"
+                                type="button"
+                                aria-pressed="false">
+                                7 Days
+                            </button>
+
+                            <button
+                                class="chart-filter"
+                                data-period="30d"
+                                type="button"
+                                aria-pressed="false">
+                                30 Days
+                            </button>
+
+                        </div>
                     </div>
 
-
-                    <div class="table-wrapper">
-
-                        <table>
-
-                            <thead>
-                                <tr>
-                                    <th>ALERT</th>
-                                    <th>SOURCE IP</th>
-                                    <th>SEVERITY</th>
-                                    <th>TIME</th>
-                                    <th>STATUS</th>
-                                </tr>
-                            </thead>
-
-                            <tbody id="alertsTable">
-
-                                <tr>
-                                    <td>Multiple Failed Login Attempts</td>
-                                    <td>192.168.1.105</td>
-                                    <td>
-                                        <span class="severity critical">Critical</span>
-                                    </td>
-                                    <td>09:42:18</td>
-                                    <td>
-                                        <span class="status open">Open</span>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>Suspicious Port Scanning</td>
-                                    <td>10.0.0.24</td>
-                                    <td>
-                                        <span class="severity high">High</span>
-                                    </td>
-                                    <td>09:35:04</td>
-                                    <td>
-                                        <span class="status investigating">Investigating</span>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>Unusual PowerShell Activity</td>
-                                    <td>192.168.1.112</td>
-                                    <td>
-                                        <span class="severity medium">Medium</span>
-                                    </td>
-                                    <td>09:21:51</td>
-                                    <td>
-                                        <span class="status open">Open</span>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>Repeated Authentication Failure</td>
-                                    <td>172.16.0.18</td>
-                                    <td>
-                                        <span class="severity low">Low</span>
-                                    </td>
-                                    <td>08:58:32</td>
-                                    <td>
-                                        <span class="status resolved">Resolved</span>
-                                    </td>
-                                </tr>
-
-                            </tbody>
-
-                        </table>
-
+                    <div class="chart-container">
+                        <canvas id="eventsChart"></canvas>
                     </div>
 
-                </section>
+                    <p class="chart-data-note">DEMO DATA · NOT LIVE</p>
+
+                </article>
+
+                <!-- ALERT SEVERITY CHART -->
+                <article class="panel">
+
+                    <div class="panel-heading">
+                        <div>
+                            <h3>Alert Severity Distribution</h3>
+                            <p>Security alerts by severity level</p>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="severityChart"></canvas>
+                    </div>
+
+                    <p class="chart-data-note">DEMO DATA · NOT LIVE</p>
+
+                </article>
 
             </section>
-            <!-- END OVERVIEW PAGE -->
 
+            <!-- RECENT SECURITY ALERTS -->
+            <section class="panel alerts-panel">
 
-            <!-- LIVE MONITORING -->
-            <section id="monitoring" class="page-section" hidden>
-
-                <h2>Live Monitoring</h2>
-                <p>Monitor incoming security events and system activity.</p>
-
-                <div class="placeholder-panel">
-                    Live monitoring data will appear here after backend integration.
+                <div class="panel-heading">
+                    <div>
+                        <h3>Recent Security Alerts</h3>
+                        <p>Latest detected security activities</p>
+                    </div>
+                    <a href="#alerts" class="view-all" data-page="alerts">
+                        View All Alerts →
+                    </a>
                 </div>
 
-            </section>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ALERT TYPE</th>
+                                <th>SOURCE IP</th>
+                                <th>SEVERITY</th>
+                                <th>TIMESTAMP</th>
+                                <th>STATUS</th>
+                            </tr>
+                        </thead>
 
+                        <tbody>
+                            <tr>
+                                <td>Multiple Failed Login Attempts</td>
+                                <td>192.168.1.105</td>
+                                <td><span class="severity critical">Critical</span></td>
+                                <td>10:42:15 AM</td>
+                                <td><span class="status open">Open</span></td>
+                            </tr>
 
-            <!-- SECURITY EVENTS -->
-            <section id="events" class="page-section" hidden>
+                            <tr>
+                                <td>Suspicious PowerShell Execution</td>
+                                <td>192.168.1.110</td>
+                                <td><span class="severity high">High</span></td>
+                                <td>10:35:20 AM</td>
+                                <td><span class="status investigating">Investigating</span></td>
+                            </tr>
 
-                <h2>Security Events</h2>
-                <p>Review and analyze collected security events.</p>
+                            <tr>
+                                <td>Port Scanning Activity</td>
+                                <td>10.0.0.25</td>
+                                <td><span class="severity medium">Medium</span></td>
+                                <td>10:28:45 AM</td>
+                                <td><span class="status open">Open</span></td>
+                            </tr>
 
-                <div class="placeholder-panel">
-                    Security events will be displayed here.
+                            <tr>
+                                <td>Unusual Network Connection</td>
+                                <td>192.168.1.120</td>
+                                <td><span class="severity low">Low</span></td>
+                                <td>10:15:30 AM</td>
+                                <td><span class="status resolved">Resolved</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
-            </section>
-
-
-            <!-- THREAT ALERTS -->
-            <section id="alerts" class="page-section" hidden>
-
-                <h2>Threat Alerts</h2>
-                <p>Investigate suspicious activities and security alerts.</p>
-
-                <div class="placeholder-panel">
-                    Threat alerts will be displayed here.
-                </div>
+                <p class="chart-data-note">SAMPLE ALERT RECORDS · NOT LIVE</p>
 
             </section>
 
+        </section>
 
-            <!-- AI INVESTIGATION -->
-            <section id="investigation" class="page-section" hidden>
+        <!-- PAGE 02 - LIVE MONITORING -->
+        <section class="page-section" id="monitoring" hidden>
+            <h2>Live Monitoring</h2>
+            <p>Monitor security activity from connected systems.</p>
+            <div class="placeholder-panel">
+                Live monitoring interface will be integrated with Wazuh.
+            </div>
+        </section>
 
-                <h2>AI Investigation</h2>
-                <p>Understand threats with AI-assisted investigation.</p>
+        <!-- PAGE 03 - SECURITY EVENTS -->
+        <section class="page-section" id="events" hidden>
+            <h2>Security Events</h2>
+            <p>Review collected security events and system logs.</p>
+            <div class="placeholder-panel">
+                Security event management interface.
+            </div>
+        </section>
 
-                <div class="placeholder-panel">
-                    AI investigation results will appear here.
-                </div>
+        <!-- PAGE 04 - THREAT ALERTS -->
+        <section class="page-section" id="alerts" hidden>
+            <h2>Threat Alerts</h2>
+            <p>Review, prioritize and investigate detected threats.</p>
+            <div class="placeholder-panel">
+                Threat alert management interface.
+            </div>
+        </section>
 
-            </section>
+        <!-- PAGE 05 - AI INVESTIGATION -->
+        <section class="page-section" id="investigation" hidden>
+            <h2>AI Investigation</h2>
+            <p>Understand suspicious activities with AI-assisted investigation.</p>
+            <div class="placeholder-panel">
+                AI alert explanation and investigation recommendations.
+            </div>
+        </section>
 
+        <!-- PAGE 06 - MITRE ATT&CK -->
+        <section class="page-section" id="mitre" hidden>
+            <h2>MITRE ATT&CK</h2>
+            <p>Explore detected threats mapped to MITRE ATT&CK techniques.</p>
+            <div class="placeholder-panel">
+                MITRE ATT&CK technique mapping interface.
+            </div>
+        </section>
 
-            <!-- MITRE ATT&CK -->
-            <section id="mitre" class="page-section" hidden>
+        <!-- PAGE 07 - ATTACK TIMELINE -->
+        <section class="page-section" id="timeline" hidden>
+            <h2>Attack Timeline</h2>
+            <p>Understand the sequence of suspicious security activities.</p>
+            <div class="placeholder-panel">
+                Attack timeline visualization.
+            </div>
+        </section>
 
-                <h2>MITRE ATT&CK</h2>
-                <p>Explore detected techniques and tactics.</p>
+        <!-- PAGE 08 - INCIDENT MANAGEMENT -->
+        <section class="page-section" id="incidents" hidden>
+            <h2>Incident Management</h2>
+            <p>Track incidents and monitor investigation progress.</p>
+            <div class="placeholder-panel">
+                Incident tracking and status management interface.
+            </div>
+        </section>
 
-                <div class="placeholder-panel">
-                    MITRE ATT&CK mapping will appear here.
-                </div>
+        <!-- PAGE 09 - RESPONSE CENTER -->
+        <section class="page-section" id="response" hidden>
+            <h2>Response Center</h2>
+            <p>Review and approve recommended security response actions.</p>
+            <div class="placeholder-panel">
+                Analyst approval and response management interface.
+            </div>
+        </section>
 
-            </section>
+        <!-- PAGE 10 - REPORTS -->
+        <section class="page-section" id="reports" hidden>
+            <h2>Reports</h2>
+            <p>View security reports and investigation summaries.</p>
+            <div class="placeholder-panel">
+                Security reporting and PDF export interface.
+            </div>
+        </section>
 
+        <!-- PAGE 11 - SETTINGS -->
+        <section class="page-section" id="settings" hidden>
+            <h2>Settings</h2>
+            <p>Manage dashboard preferences and system configuration.</p>
+            <div class="placeholder-panel">
+                SentinelAI configuration settings.
+            </div>
+        </section>
 
-            <!-- ATTACK TIMELINE -->
-            <section id="timeline" class="page-section" hidden>
+        <!-- FOOTER -->
+        <footer class="footer">
+            <span>© 2026 SentinelAI. All rights reserved.</span>
+            <span>AI-Powered Security Operations Center</span>
+        </footer>
 
-                <h2>Attack Timeline</h2>
-                <p>Review the sequence of suspicious security activities.</p>
+    </main>
 
-                <div class="placeholder-panel">
-                    Attack timeline will appear here.
-                </div>
+</div>
 
-            </section>
-
-
-            <!-- INCIDENT MANAGEMENT -->
-            <section id="incidents" class="page-section" hidden>
-
-                <h2>Incident Management</h2>
-                <p>Track and manage security incidents.</p>
-
-                <div class="placeholder-panel">
-                    Incident records will appear here.
-                </div>
-
-            </section>
-
-
-            <!-- RESPONSE CENTER -->
-            <section id="response" class="page-section" hidden>
-
-                <h2>Response Center</h2>
-                <p>Review and manage analyst-approved response actions.</p>
-
-                <div class="placeholder-panel">
-                    Response actions will appear here.
-                </div>
-
-            </section>
-
-
-            <!-- REPORTS -->
-            <section id="reports" class="page-section" hidden>
-
-                <h2>Reports</h2>
-                <p>Review security reports and investigation summaries.</p>
-
-                <div class="placeholder-panel">
-                    Security reports will appear here.
-                </div>
-
-            </section>
-
-
-            <!-- SETTINGS -->
-            <section id="settings" class="page-section" hidden>
-
-                <h2>Settings</h2>
-                <p>Manage dashboard preferences and application settings.</p>
-
-                <div class="placeholder-panel">
-                    Dashboard settings will appear here.
-                </div>
-
-            </section>
-
-
-            <!-- FOOTER -->
-            <footer class="footer">
-
-                <span>SentinelAI © 2026</span>
-                <span>AI-Assisted Security Operations Center</span>
-
-            </footer>
-
-        </main>
-
-    </div>
-
-    <script src="js/app.js"></script>
+<!-- JAVASCRIPT -->
+<script src="js/app.js"></script>
 
 </body>
 </html>

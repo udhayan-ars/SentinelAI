@@ -169,18 +169,42 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ======================================
-    // SECURITY EVENT ACTIVITY CHART
+    // TASK 10 - SECURITY EVENT ACTIVITY CHART
     // ======================================
 
     const eventsCanvas = document.getElementById("eventsChart");
 
     if (eventsCanvas && typeof Chart !== "undefined") {
 
-        new Chart(eventsCanvas, {
+        // DEMO DATA - NOT LIVE
 
-            type: "line",
+        const eventChartData = {
 
-            data: {
+            "24h": {
+
+                labels: [
+                    "00:00",
+                    "04:00",
+                    "08:00",
+                    "12:00",
+                    "16:00",
+                    "20:00",
+                    "24:00"
+                ],
+
+                data: [
+                    120,
+                    85,
+                    210,
+                    340,
+                    280,
+                    410,
+                    190
+                ]
+
+            },
+
+            "7d": {
 
                 labels: [
                     "Mon",
@@ -192,25 +216,72 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Sun"
                 ],
 
+                data: [
+                    1200,
+                    1900,
+                    1500,
+                    2400,
+                    1800,
+                    2800,
+                    2600
+                ]
+
+            },
+
+            "30d": {
+
+                labels: [
+                    "Week 1",
+                    "Week 2",
+                    "Week 3",
+                    "Week 4"
+                ],
+
+                data: [
+                    8500,
+                    11200,
+                    9700,
+                    14500
+                ]
+
+            }
+
+        };
+
+        let currentPeriod = "24h";
+
+        const eventsChart = new Chart(eventsCanvas, {
+
+            type: "line",
+
+            data: {
+
+                labels: eventChartData[currentPeriod].labels,
+
                 datasets: [{
+
                     label: "Security Events",
 
-                    data: [
-                        1200,
-                        1900,
-                        1500,
-                        2400,
-                        1800,
-                        2800,
-                        2600
-                    ],
+                    data: eventChartData[currentPeriod].data,
 
                     borderColor: "#3b82f6",
-                    backgroundColor: "rgba(59, 130, 246, 0.12)",
+
+                    backgroundColor: "rgba(59, 130, 246, 0.13)",
+
                     fill: true,
+
                     tension: 0.4,
-                    pointRadius: 3,
-                    pointBackgroundColor: "#22d3ee"
+
+                    pointRadius: 4,
+
+                    pointHoverRadius: 7,
+
+                    pointBackgroundColor: "#22d3ee",
+
+                    pointBorderColor: "#101d30",
+
+                    pointBorderWidth: 2
+
                 }]
 
             },
@@ -218,17 +289,51 @@ document.addEventListener("DOMContentLoaded", function () {
             options: {
 
                 responsive: true,
+
                 maintainAspectRatio: false,
+
+                interaction: {
+                    intersect: false,
+                    mode: "index"
+                },
 
                 plugins: {
 
                     legend: {
 
                         labels: {
-                            color: "#9aabc1",
-                            font: {
-                                size: 10
+
+                            color: "#cbd5e1",
+
+                            usePointStyle: true,
+
+                            padding: 15
+
+                        }
+
+                    },
+
+                    tooltip: {
+
+                        backgroundColor: "#14243a",
+
+                        titleColor: "#ffffff",
+
+                        bodyColor: "#cbd5e1",
+
+                        borderColor: "#3b82f6",
+
+                        borderWidth: 1,
+
+                        callbacks: {
+
+                            label: function (context) {
+
+                                return " Events: " +
+                                    context.parsed.y.toLocaleString("en-US");
+
                             }
+
                         }
 
                     }
@@ -269,6 +374,63 @@ document.addEventListener("DOMContentLoaded", function () {
 
         });
 
+
+        // ======================================
+        // CHART PERIOD FILTER FUNCTIONALITY
+        // ======================================
+
+        const chartFilterButtons =
+            document.querySelectorAll(".chart-filter");
+
+        chartFilterButtons.forEach(button => {
+
+            button.addEventListener("click", function () {
+
+                const selectedPeriod = this.dataset.period;
+
+                if (!eventChartData[selectedPeriod]) {
+                    return;
+                }
+
+                currentPeriod = selectedPeriod;
+
+                // Update active button state
+
+                chartFilterButtons.forEach(filter => {
+
+                    filter.classList.remove("active");
+
+                    filter.setAttribute("aria-pressed", "false");
+
+                });
+
+                this.classList.add("active");
+
+                this.setAttribute("aria-pressed", "true");
+
+                // Update chart labels
+
+                eventsChart.data.labels =
+                    eventChartData[currentPeriod].labels;
+
+                // Update chart data
+
+                eventsChart.data.datasets[0].data =
+                    eventChartData[currentPeriod].data;
+
+                // Refresh chart
+
+                eventsChart.update();
+
+                console.log(
+                    "Security event chart updated:",
+                    currentPeriod
+                );
+
+            });
+
+        });
+
     }
 
 
@@ -306,7 +468,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     ],
 
                     borderColor: "#101d30",
+
                     borderWidth: 4,
+
                     hoverOffset: 10
 
                 }]
@@ -316,7 +480,9 @@ document.addEventListener("DOMContentLoaded", function () {
             options: {
 
                 responsive: true,
+
                 maintainAspectRatio: false,
+
                 cutout: "68%",
 
                 plugins: {
@@ -328,8 +494,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         labels: {
 
                             color: "#cbd5e1",
+
                             padding: 18,
+
                             usePointStyle: true,
+
                             pointStyle: "circle",
 
                             font: {

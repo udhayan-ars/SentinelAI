@@ -576,6 +576,95 @@ body {
 }
 
 /* ==========================================
+   TASK 10 - PREMIUM CHART FILTER BUTTONS
+========================================== */
+
+.chart-filters {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px;
+    background: #0b1728;
+    border: 1px solid #263a54;
+    border-radius: 9px;
+    flex-shrink: 0;
+}
+
+.chart-filter {
+    position: relative;
+    padding: 9px 13px;
+    min-width: 76px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    color: #8fa3bd;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        color 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.2s ease;
+}
+
+.chart-filter:hover {
+    color: #ffffff;
+    background: #172b44;
+    border-color: #304966;
+}
+
+.chart-filter.active {
+    color: #ffffff;
+
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #1d4ed8
+    );
+
+    border-color: #3b82f6;
+
+    box-shadow:
+        0 2px 8px rgba(37, 99, 235, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.chart-filter.active:hover {
+    background: linear-gradient(
+        135deg,
+        #3b82f6,
+        #2563eb
+    );
+
+    box-shadow:
+        0 3px 12px rgba(37, 99, 235, 0.35);
+}
+
+.chart-filter:active {
+    transform: scale(0.96);
+}
+
+.chart-filter:focus-visible {
+    outline: 2px solid #60a5fa;
+    outline-offset: 3px;
+}
+
+/* ==========================================
+   CHART DATA NOTE
+========================================== */
+
+.chart-data-note {
+    color: #71849e;
+    font-size: 9px;
+    letter-spacing: 1px;
+    margin-top: 12px;
+}
+
+/* ==========================================
    RECENT SECURITY ALERTS
 ========================================== */
 
@@ -786,8 +875,6 @@ tbody tr:last-child td {
 
 @media (max-width: 700px) {
 
-    /* Sidebar */
-
     .sidebar {
         width: 65px;
         padding: 18px 8px;
@@ -802,8 +889,6 @@ tbody tr:last-child td {
     .nav-heading {
         display: none;
     }
-
-    /* Keep every navigation icon visible */
 
     .navigation .nav-link,
     .sidebar-bottom .nav-link {
@@ -833,8 +918,6 @@ tbody tr:last-child td {
         display: none;
     }
 
-    /* Main content */
-
     .main-content {
         padding: 20px 14px;
     }
@@ -860,20 +943,14 @@ tbody tr:last-child td {
         display: none;
     }
 
-    /* Welcome section */
-
     .welcome-section {
         align-items: flex-start;
         flex-direction: column;
     }
 
-    /* Dashboard cards */
-
     .stats-grid {
         grid-template-columns: 1fr;
     }
-
-    /* Footer */
 
     .footer {
         flex-direction: column;
@@ -911,6 +988,30 @@ tbody tr:last-child td {
 
     .chart-container {
         height: 210px;
+    }
+
+}
+
+/* ==========================================
+   TASK 10 - CHART FILTER MOBILE RESPONSIVE
+========================================== */
+
+@media (max-width: 600px) {
+
+    .panel-heading {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .chart-filters {
+        width: 100%;
+    }
+
+    .chart-filter {
+        flex: 1;
+        min-width: 0;
+        padding: 9px 6px;
+        font-size: 10px;
     }
 
 }
