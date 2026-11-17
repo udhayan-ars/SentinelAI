@@ -48,11 +48,18 @@ document.addEventListener("DOMContentLoaded", function () {
             );
         });
 
-        document.getElementById("pageTitle").textContent =
-            pageTitles[pageName] || "SentinelAI";
+        const pageTitleElement = document.getElementById("pageTitle");
+        const breadcrumbElement = document.getElementById("breadcrumbPage");
 
-        document.getElementById("breadcrumbPage").textContent =
-            pageTitles[pageName] || "Overview";
+        if (pageTitleElement) {
+            pageTitleElement.textContent =
+                pageTitles[pageName] || "SentinelAI";
+        }
+
+        if (breadcrumbElement) {
+            breadcrumbElement.textContent =
+                pageTitles[pageName] || "Overview";
+        }
 
         if (window.location.hash !== "#" + pageName) {
             history.replaceState(null, "", "#" + pageName);
@@ -60,17 +67,27 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     navigationLinks.forEach(link => {
+
         link.addEventListener("click", function (event) {
+
             event.preventDefault();
+
             showPage(this.dataset.page);
+
         });
+
     });
 
     document.querySelectorAll(".view-all[data-page]").forEach(link => {
+
         link.addEventListener("click", function (event) {
+
             event.preventDefault();
+
             showPage(this.dataset.page);
+
         });
+
     });
 
     const initialPage = window.location.hash.replace("#", "");
@@ -82,11 +99,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     window.addEventListener("hashchange", function () {
+
         const page = window.location.hash.replace("#", "");
 
         if (document.getElementById(page)) {
             showPage(page);
         }
+
     });
 
 
@@ -117,6 +136,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (matchingLink) {
 
                 showPage(matchingLink.dataset.page);
+
                 this.value = "";
 
             } else {
@@ -161,11 +181,30 @@ document.addEventListener("DOMContentLoaded", function () {
             type: "line",
 
             data: {
-                labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+
+                labels: [
+                    "Mon",
+                    "Tue",
+                    "Wed",
+                    "Thu",
+                    "Fri",
+                    "Sat",
+                    "Sun"
+                ],
 
                 datasets: [{
                     label: "Security Events",
-                    data: [1200, 1900, 1500, 2400, 1800, 2800, 2600],
+
+                    data: [
+                        1200,
+                        1900,
+                        1500,
+                        2400,
+                        1800,
+                        2800,
+                        2600
+                    ],
+
                     borderColor: "#3b82f6",
                     backgroundColor: "rgba(59, 130, 246, 0.12)",
                     fill: true,
@@ -173,37 +212,59 @@ document.addEventListener("DOMContentLoaded", function () {
                     pointRadius: 3,
                     pointBackgroundColor: "#22d3ee"
                 }]
+
             },
 
             options: {
+
                 responsive: true,
                 maintainAspectRatio: false,
 
                 plugins: {
+
                     legend: {
+
                         labels: {
                             color: "#9aabc1",
-                            font: { size: 10 }
+                            font: {
+                                size: 10
+                            }
                         }
+
                     }
+
                 },
 
                 scales: {
+
                     x: {
-                        ticks: { color: "#8192a9" },
+
+                        ticks: {
+                            color: "#8192a9"
+                        },
+
                         grid: {
                             color: "rgba(120, 145, 175, 0.08)"
                         }
+
                     },
 
                     y: {
+
                         beginAtZero: true,
-                        ticks: { color: "#8192a9" },
+
+                        ticks: {
+                            color: "#8192a9"
+                        },
+
                         grid: {
                             color: "rgba(120, 145, 175, 0.08)"
                         }
+
                     }
+
                 }
+
             }
 
         });
@@ -212,10 +273,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ======================================
-    // ALERT SEVERITY CHART
+    // ENHANCED SECURITY SEVERITY CHART
     // ======================================
 
-    const severityCanvas = document.getElementById("severityChart");
+    const severityCanvas =
+        document.getElementById("severityChart");
 
     if (severityCanvas && typeof Chart !== "undefined") {
 
@@ -224,45 +286,228 @@ document.addEventListener("DOMContentLoaded", function () {
             type: "doughnut",
 
             data: {
-                labels: ["Critical", "High", "Medium", "Low"],
+
+                labels: [
+                    "Critical",
+                    "High",
+                    "Medium",
+                    "Low"
+                ],
 
                 datasets: [{
-                    data: [3, 7, 9, 5],
+
+                    data: [3, 8, 12, 18],
+
                     backgroundColor: [
                         "#ef4444",
                         "#f97316",
                         "#eab308",
-                        "#3b82f6"
+                        "#22c55e"
                     ],
+
                     borderColor: "#101d30",
                     borderWidth: 4,
-                    hoverOffset: 6
+                    hoverOffset: 10
+
                 }]
+
             },
 
             options: {
+
                 responsive: true,
                 maintainAspectRatio: false,
                 cutout: "68%",
 
                 plugins: {
+
                     legend: {
+
                         position: "bottom",
 
                         labels: {
-                            color: "#9aabc1",
-                            padding: 17,
+
+                            color: "#cbd5e1",
+                            padding: 18,
                             usePointStyle: true,
-                            font: { size: 10 }
+                            pointStyle: "circle",
+
+                            font: {
+                                size: 11
+                            }
+
                         }
+
+                    },
+
+                    tooltip: {
+
+                        callbacks: {
+
+                            label: function (context) {
+
+                                const values = context.dataset.data;
+
+                                const total = values.reduce(
+                                    (sum, value) => sum + value,
+                                    0
+                                );
+
+                                const percentage = (
+                                    (context.raw / total) * 100
+                                ).toFixed(1);
+
+                                return `${context.label}: ${context.raw} alerts (${percentage}%)`;
+
+                            }
+
+                        }
+
                     }
+
                 }
+
             }
 
         });
 
     }
 
-    console.log("SentinelAI dashboard initialized successfully.");
+
+    // ======================================
+    // TOTAL EVENTS COUNTER ANIMATION
+    // ======================================
+
+    const totalEventsElement =
+        document.getElementById("totalEvents");
+
+    if (totalEventsElement) {
+
+        const targetValue = 12480;
+        const duration = 1500;
+        const startTime = performance.now();
+
+        function animateTotalEvents(currentTime) {
+
+            const elapsed = currentTime - startTime;
+
+            const progress = Math.min(
+                elapsed / duration,
+                1
+            );
+
+            const easedProgress =
+                1 - Math.pow(1 - progress, 3);
+
+            const currentValue = Math.floor(
+                targetValue * easedProgress
+            );
+
+            totalEventsElement.textContent =
+                currentValue.toLocaleString("en-US");
+
+            if (progress < 1) {
+                requestAnimationFrame(animateTotalEvents);
+            }
+
+        }
+
+        requestAnimationFrame(animateTotalEvents);
+
+    }
+
+
+    // ======================================
+    // ACTIVE ALERTS COUNTER ANIMATION
+    // ======================================
+
+    const activeAlertsElement =
+        document.getElementById("activeAlerts");
+
+    if (activeAlertsElement) {
+
+        const targetAlerts = 24;
+        const duration = 1200;
+        const startTime = performance.now();
+
+        function animateActiveAlerts(currentTime) {
+
+            const elapsed = currentTime - startTime;
+
+            const progress = Math.min(
+                elapsed / duration,
+                1
+            );
+
+            const easedProgress =
+                1 - Math.pow(1 - progress, 3);
+
+            const currentValue = Math.floor(
+                targetAlerts * easedProgress
+            );
+
+            activeAlertsElement.textContent = currentValue;
+
+            if (progress < 1) {
+                requestAnimationFrame(animateActiveAlerts);
+            }
+
+        }
+
+        requestAnimationFrame(animateActiveAlerts);
+
+    }
+
+
+    // ======================================
+    // CRITICAL INCIDENTS COUNTER ANIMATION
+    // ======================================
+
+    const criticalIncidentsElement =
+        document.getElementById("criticalIncidents");
+
+    if (criticalIncidentsElement) {
+
+        const targetIncidents = 3;
+        const duration = 1200;
+        const startTime = performance.now();
+
+        function animateCriticalIncidents(currentTime) {
+
+            const elapsed = currentTime - startTime;
+
+            const progress = Math.min(
+                elapsed / duration,
+                1
+            );
+
+            const easedProgress =
+                1 - Math.pow(1 - progress, 3);
+
+            const currentValue = Math.floor(
+                targetIncidents * easedProgress
+            );
+
+            criticalIncidentsElement.textContent =
+                String(currentValue).padStart(2, "0");
+
+            if (progress < 1) {
+                requestAnimationFrame(animateCriticalIncidents);
+            }
+
+        }
+
+        requestAnimationFrame(animateCriticalIncidents);
+
+    }
+
+
+    // ======================================
+    // DASHBOARD INITIALIZATION COMPLETE
+    // ======================================
+
+    console.log(
+        "SentinelAI dashboard initialized successfully."
+    );
 
 });
