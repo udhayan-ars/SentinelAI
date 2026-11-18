@@ -466,6 +466,54 @@
                 <p id="detailDescription">No alert selected.</p>
             </div>
 
+            <!-- TASK 15 - ALERT ASSIGNMENT & INVESTIGATION NOTES -->
+<div class="alert-details-card task15-assignment-card">
+
+    <h3>Alert Assignment & Investigation Notes</h3>
+
+    <div class="task15-form-grid">
+
+        <div class="task15-field">
+            <label for="alertAnalystSelect">Assign Analyst</label>
+
+            <select id="alertAnalystSelect">
+                <option value="">Unassigned</option>
+                <option value="SOC Analyst L1">SOC Analyst L1</option>
+                <option value="SOC Analyst L2">SOC Analyst L2</option>
+                <option value="Incident Responder">Incident Responder</option>
+            </select>
+
+            <small id="analystSaveMessage" role="status"></small>
+        </div>
+
+        <div class="detail-item">
+            <span>Currently Assigned Analyst</span>
+            <strong id="detailAssignedAnalyst">Unassigned</strong>
+        </div>
+
+    </div>
+
+    <div class="task15-field notes-field">
+        <label for="alertInvestigationNotes">Investigation Notes</label>
+
+        <textarea
+            id="alertInvestigationNotes"
+            rows="5"
+            placeholder="Enter your investigation findings here..."></textarea>
+    </div>
+
+    <div class="task15-actions">
+        <button type="button" id="saveAlertNotes">
+            Save Notes
+        </button>
+
+        <span id="notesSaveMessage" role="status"></span>
+    </div>
+
+</div>
+            
+            
+            
             <div class="alert-details-card">
                 <h3>Recommended Investigation Steps</h3>
                 <ol id="detailInvestigationSteps">

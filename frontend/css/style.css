@@ -1456,3 +1456,133 @@ tbody tr:last-child td {
         font-size: 8px;
     }
 }
+
+/* ==========================================
+   TASK 15 - ALERT ASSIGNMENT & ANALYST NOTES
+========================================== */
+
+.task15-assignment-card {
+    margin-top: 18px;
+}
+
+.task15-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.task15-field {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    min-width: 0;
+}
+
+.task15-field label {
+    color: #aab9cc;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.task15-field select,
+.task15-field textarea {
+    width: 100%;
+    padding: 12px 14px;
+    color: #e5e7eb;
+    background: #0b1728;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 12px;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.task15-field select {
+    cursor: pointer;
+}
+
+.task15-field select option {
+    background: #111827;
+    color: #e5e7eb;
+}
+
+.task15-field textarea {
+    min-height: 120px;
+    resize: vertical;
+    line-height: 1.7;
+}
+
+.task15-field textarea::placeholder {
+    color: #71849e;
+}
+
+.task15-field select:focus,
+.task15-field textarea:focus {
+    border-color: var(--blue);
+}
+
+.task15-field small {
+    color: #4ade80;
+    font-size: 11px;
+    min-height: 14px;
+}
+
+.notes-field {
+    margin-top: 5px;
+}
+
+.task15-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 16px;
+}
+
+#saveAlertNotes {
+    padding: 10px 18px;
+    color: #ffffff;
+    background: var(--blue);
+    border: none;
+    border-radius: 7px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#saveAlertNotes:hover {
+    filter: brightness(1.15);
+    transform: translateY(-1px);
+}
+
+#saveAlertNotes:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 3px;
+}
+
+#notesSaveMessage {
+    color: #4ade80;
+    font-size: 11px;
+}
+
+/* TASK 15 - MOBILE RESPONSIVENESS */
+
+@media (max-width: 700px) {
+    .task15-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .task15-actions {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    #saveAlertNotes {
+        width: 100%;
+    }
+}
+

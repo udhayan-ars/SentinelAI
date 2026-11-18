@@ -1,3 +1,4 @@
+
 // ==========================================
 // SENTINELAI - DASHBOARD INITIALIZATION
 // ==========================================
@@ -410,6 +411,96 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
+    // ==========================================
+    // TASK 15 - ALERT ASSIGNMENT & NOTES STORAGE
+    // ==========================================
+
+    const alertAssignmentStorageKey =
+        "sentinelAI.alertAssignments";
+
+    let currentAlertId = null;
+
+    function loadAlertAssignments() {
+
+        try {
+
+            const saved = JSON.parse(
+                localStorage.getItem(alertAssignmentStorageKey) || "{}"
+            );
+
+            return saved &&
+                typeof saved === "object" &&
+                !Array.isArray(saved)
+                ? saved
+                : {};
+
+        } catch (error) {
+
+            console.warn(
+                "Unable to load alert assignments:",
+                error
+            );
+
+            return {};
+
+        }
+
+    }
+
+    let savedAlertAssignments = loadAlertAssignments();
+
+    function saveAlertAssignments() {
+
+        try {
+
+            localStorage.setItem(
+                alertAssignmentStorageKey,
+                JSON.stringify(savedAlertAssignments)
+            );
+
+            return true;
+
+        } catch (error) {
+
+            console.warn(
+                "Unable to save alert assignments:",
+                error
+            );
+
+            return false;
+
+        }
+
+    }
+
+    function getAlertAssignment(alertId) {
+
+        const assignment = savedAlertAssignments[alertId];
+
+        if (
+            !assignment ||
+            typeof assignment !== "object" ||
+            Array.isArray(assignment)
+        ) {
+            return {
+                analyst: "",
+                notes: ""
+            };
+        }
+
+        return {
+            analyst: typeof assignment.analyst === "string"
+                ? assignment.analyst
+                : "",
+
+            notes: typeof assignment.notes === "string"
+                ? assignment.notes
+                : ""
+        };
+
+    }
+
+
     // ======================================
     // TASK 12 - ENHANCED ALERT SEARCH
     // ======================================
@@ -475,22 +566,32 @@ document.addEventListener("DOMContentLoaded", function () {
                     );
                 }
 
-                const alertText =
-                    searchableRow.textContent.toLowerCase();
+                const alertId = row.dataset.alertId || "";
+
+                const assignment = getAlertAssignment(alertId);
+
+                const alertText = (
+                    searchableRow.textContent + " " +
+                    assignment.analyst + " " +
+                    assignment.notes
+                ).toLowerCase();
 
                 const rowSeverity =
                     (row.dataset.severity || "").toLowerCase();
 
-                // Search alert type, source IP and other row details
+                // Search alert details, analyst and investigation notes
+
                 const matchesSearch =
                     alertText.includes(searchValue);
 
                 // Apply severity filter
+
                 const matchesSeverity =
                     selectedSeverity === "all" ||
                     rowSeverity === selectedSeverity;
 
                 // Combine search and severity conditions
+
                 const shouldDisplay =
                     matchesSearch && matchesSeverity;
 
@@ -748,6 +849,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     // Reuse the existing alerts table body
+
     const detailsTableBody = alertsTableBody;
 
     function setDetailText(elementId, value) {
@@ -763,6 +865,9 @@ document.addEventListener("DOMContentLoaded", function () {
     function openAlertDetails(row) {
 
         const alertId = row.dataset.alertId;
+
+        currentAlertId = alertId;
+
         const details = alertDetailsData[alertId];
 
         if (!details) {
@@ -868,6 +973,49 @@ document.addEventListener("DOMContentLoaded", function () {
 
             });
 
+        }
+
+
+        // ======================================
+        // TASK 15 - RESTORE ASSIGNMENT AND NOTES
+        // ======================================
+
+        const assignment = getAlertAssignment(alertId);
+
+        const analystSelect =
+            document.getElementById("alertAnalystSelect");
+
+        const assignedAnalyst =
+            document.getElementById("detailAssignedAnalyst");
+
+        const investigationNotes =
+            document.getElementById("alertInvestigationNotes");
+
+        const analystMessage =
+            document.getElementById("analystSaveMessage");
+
+        const notesMessage =
+            document.getElementById("notesSaveMessage");
+
+        if (analystSelect) {
+            analystSelect.value = assignment.analyst || "";
+        }
+
+        if (assignedAnalyst) {
+            assignedAnalyst.textContent =
+                assignment.analyst || "Unassigned";
+        }
+
+        if (investigationNotes) {
+            investigationNotes.value = assignment.notes || "";
+        }
+
+        if (analystMessage) {
+            analystMessage.textContent = "";
+        }
+
+        if (notesMessage) {
+            notesMessage.textContent = "";
         }
 
         showPage("alertDetails");
@@ -1186,7 +1334,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             // REFRESH SEARCH RESULTS
-            // So the updated status is searchable immediately
 
             if (alertSearch) {
 
@@ -1222,6 +1369,118 @@ document.addEventListener("DOMContentLoaded", function () {
                 bubbles: true
             })
         );
+
+    }
+
+
+    // ==========================================
+    // TASK 15 - ALERT ASSIGNMENT & ANALYST NOTES
+    // ==========================================
+
+    const analystSelect =
+        document.getElementById("alertAnalystSelect");
+
+    const assignedAnalyst =
+        document.getElementById("detailAssignedAnalyst");
+
+    const investigationNotes =
+        document.getElementById("alertInvestigationNotes");
+
+    const saveNotesButton =
+        document.getElementById("saveAlertNotes");
+
+    const analystSaveMessage =
+        document.getElementById("analystSaveMessage");
+
+    const notesSaveMessage =
+        document.getElementById("notesSaveMessage");
+
+
+    // SAVE ANALYST ASSIGNMENT
+
+    if (analystSelect) {
+
+        analystSelect.addEventListener("change", function () {
+
+            if (!currentAlertId) {
+                return;
+            }
+
+            const assignment = getAlertAssignment(currentAlertId);
+
+            assignment.analyst = this.value;
+
+            savedAlertAssignments[currentAlertId] = assignment;
+
+            const saved = saveAlertAssignments();
+
+            if (assignedAnalyst) {
+                assignedAnalyst.textContent =
+                    this.value || "Unassigned";
+            }
+
+            if (analystSaveMessage) {
+                analystSaveMessage.textContent = saved
+                    ? "Analyst assignment saved."
+                    : "Unable to save assignment.";
+            }
+
+            // REFRESH SEARCH RESULTS
+
+            if (alertSearch) {
+                alertSearch.dispatchEvent(
+                    new Event("input", { bubbles: true })
+                );
+            }
+
+            console.log(
+                `Alert ${currentAlertId} assigned to ${this.value || "Unassigned"}.`
+            );
+
+        });
+
+    }
+
+
+    // SAVE INVESTIGATION NOTES
+
+    if (saveNotesButton) {
+
+        saveNotesButton.addEventListener("click", function () {
+
+            if (!currentAlertId) {
+                return;
+            }
+
+            const assignment = getAlertAssignment(currentAlertId);
+
+            assignment.notes = investigationNotes
+                ? investigationNotes.value.trim()
+                : "";
+
+            savedAlertAssignments[currentAlertId] = assignment;
+
+            const saved = saveAlertAssignments();
+
+            if (notesSaveMessage) {
+                notesSaveMessage.textContent = saved
+                    ? "Investigation notes saved successfully."
+                    : "Unable to save notes.";
+            }
+
+            // REFRESH SEARCH RESULTS
+
+            if (alertSearch) {
+                alertSearch.dispatchEvent(
+                    new Event("input", { bubbles: true })
+                );
+            }
+
+            console.log(
+                `Investigation notes saved for ${currentAlertId}.`
+            );
+
+        });
 
     }
 
