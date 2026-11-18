@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ======================================
-    // TOPBAR SEARCH FUNCTIONALITY
+    // TOPBAR SEARCH
     // ======================================
 
     const topbarSearch =
@@ -570,6 +570,24 @@ document.addEventListener("DOMContentLoaded", function () {
     const alertsTable =
         document.getElementById("alertsTable");
 
+    const alertSort =
+        document.getElementById("alertSort");
+
+    const alertsPerPage =
+        document.getElementById("alertsPerPage");
+
+    const previousAlertsPage =
+        document.getElementById("previousAlertsPage");
+
+    const nextAlertsPage =
+        document.getElementById("nextAlertsPage");
+
+    const alertsPageInfo =
+        document.getElementById("alertsPageInfo");
+
+    const alertsPagination =
+        document.getElementById("alertsPagination");
+
     const alertRows = alertsTableBody
         ? Array.from(alertsTableBody.querySelectorAll("tr"))
         : [];
@@ -577,9 +595,125 @@ document.addEventListener("DOMContentLoaded", function () {
     const totalAlertCount =
         alertRows.length;
 
+    // Preserve the original table order for Default Order.
+    const originalAlertOrder = [...alertRows];
+
+    let currentAlertsPage = 1;
+
+    let currentAlertsPerPage = alertsPerPage
+        ? Number(alertsPerPage.value) || 2
+        : 2;
+
+    const severityOrder = {
+        critical: 4,
+        high: 3,
+        medium: 2,
+        low: 1
+    };
+
+
+    // ==========================================
+    // TASK 16 - ALERT SORTING
+    // ==========================================
+
+    function getAlertTimeValue(row) {
+
+        const timestamp =
+            row.querySelectorAll("td")[3]
+                ?.textContent.trim() || "";
+
+        // Current demo records contain time only.
+        // Convert to seconds for chronological sorting.
+        const match = timestamp.match(
+            /^(\d{1,2}):(\d{2}):(\d{2})\s*(AM|PM)$/i
+        );
+
+        if (!match) {
+            return 0;
+        }
+
+        let hours = Number(match[1]);
+
+        const minutes = Number(match[2]);
+        const seconds = Number(match[3]);
+        const period = match[4].toUpperCase();
+
+        if (period === "PM" && hours !== 12) {
+            hours += 12;
+        }
+
+        if (period === "AM" && hours === 12) {
+            hours = 0;
+        }
+
+        return (
+            hours * 3600 +
+            minutes * 60 +
+            seconds
+        );
+
+    }
+
+    function getSortedAlertRows(rows) {
+
+        const sortValue = alertSort
+            ? alertSort.value
+            : "default";
+
+        const sortedRows = [...rows];
+
+        switch (sortValue) {
+
+            case "severity-desc":
+
+                sortedRows.sort((a, b) =>
+                    (severityOrder[b.dataset.severity] || 0) -
+                    (severityOrder[a.dataset.severity] || 0)
+                );
+
+                break;
+
+            case "severity-asc":
+
+                sortedRows.sort((a, b) =>
+                    (severityOrder[a.dataset.severity] || 0) -
+                    (severityOrder[b.dataset.severity] || 0)
+                );
+
+                break;
+
+            case "newest":
+
+                sortedRows.sort((a, b) =>
+                    getAlertTimeValue(b) - getAlertTimeValue(a)
+                );
+
+                break;
+
+            case "oldest":
+
+                sortedRows.sort((a, b) =>
+                    getAlertTimeValue(a) - getAlertTimeValue(b)
+                );
+
+                break;
+
+            default:
+
+                return originalAlertOrder.filter(row =>
+                    rows.includes(row)
+                );
+
+        }
+
+        return sortedRows;
+
+    }
+
 
     // ======================================
-    // TASK 12 - ENHANCED ALERT SEARCH
+    // TASK 12 + TASK 16
+    // ALERT SEARCH, FILTER, SORT & PAGINATION
     // ======================================
 
     function filterSecurityAlerts() {
@@ -601,9 +735,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const selectedSeverity =
             severityFilter.value.trim().toLowerCase();
 
-        let visibleCount = 0;
+        // FILTER ALERTS
 
-        alertRows.forEach(row => {
+        const filteredRows = alertRows.filter(row => {
 
             const searchableRow =
                 row.cloneNode(true);
@@ -644,38 +778,195 @@ document.addEventListener("DOMContentLoaded", function () {
                 selectedSeverity === "all" ||
                 rowSeverity === selectedSeverity;
 
-            const shouldDisplay =
-                matchesSearch && matchesSeverity;
-
-            row.hidden = !shouldDisplay;
-
-            if (shouldDisplay) {
-                visibleCount++;
-            }
+            return matchesSearch && matchesSeverity;
 
         });
 
-        alertCount.textContent =
-            `Showing ${visibleCount} of ${totalAlertCount} alerts`;
+        // SORT FILTERED ALERTS
+
+        const sortedRows =
+            getSortedAlertRows(filteredRows);
+
+        // CALCULATE PAGINATION
+
+        const totalFilteredAlerts =
+            sortedRows.length;
+
+        const totalPages = Math.max(
+            1,
+            Math.ceil(
+                totalFilteredAlerts / currentAlertsPerPage
+            )
+        );
+
+        currentAlertsPage = Math.min(
+            currentAlertsPage,
+            totalPages
+        );
+
+        const startIndex =
+            (currentAlertsPage - 1) * currentAlertsPerPage;
+
+        const endIndex =
+            Math.min(
+                startIndex + currentAlertsPerPage,
+                totalFilteredAlerts
+            );
+
+        const visibleRows =
+            sortedRows.slice(startIndex, endIndex);
+
+        // UPDATE TABLE ORDER AND VISIBILITY
+
+        sortedRows.forEach(row => {
+
+            alertsTableBody.appendChild(row);
+
+            row.hidden = !visibleRows.includes(row);
+
+        });
+
+        // UPDATE ALERT COUNT
+
+        if (totalFilteredAlerts === 0) {
+
+            alertCount.textContent =
+                "Showing 0 of 0 alerts";
+
+        } else {
+
+            alertCount.textContent =
+                `Showing ${startIndex + 1}-${endIndex} of ${totalFilteredAlerts} alerts`;
+
+        }
+
+        // NO RESULTS MESSAGE
 
         const noResults =
-            visibleCount === 0;
+            totalFilteredAlerts === 0;
 
         noAlertsMessage.hidden = !noResults;
         alertsTable.hidden = noResults;
 
+        // CLEAR SEARCH BUTTON
+
         if (clearAlertSearch) {
+
             clearAlertSearch.hidden =
                 searchValue.length === 0;
+
+        }
+
+        // PAGINATION INFO
+
+        if (alertsPageInfo) {
+
+            alertsPageInfo.textContent =
+                `Page ${currentAlertsPage} of ${totalPages}`;
+
+        }
+
+        if (previousAlertsPage) {
+
+            previousAlertsPage.disabled =
+                currentAlertsPage <= 1 ||
+                totalFilteredAlerts === 0;
+
+        }
+
+        if (nextAlertsPage) {
+
+            nextAlertsPage.disabled =
+                currentAlertsPage >= totalPages ||
+                totalFilteredAlerts === 0;
+
+        }
+
+        if (alertsPagination) {
+
+            alertsPagination.hidden =
+                totalFilteredAlerts === 0;
+
         }
 
     }
+
+
+    // ==========================================
+    // TASK 16 - SORTING & PAGINATION LISTENERS
+    // ==========================================
+
+    if (alertSort) {
+
+        alertSort.addEventListener("change", function () {
+
+            currentAlertsPage = 1;
+
+            filterSecurityAlerts();
+
+        });
+
+    }
+
+    if (alertsPerPage) {
+
+        alertsPerPage.addEventListener("change", function () {
+
+            currentAlertsPerPage =
+                Number(this.value) || 2;
+
+            currentAlertsPage = 1;
+
+            filterSecurityAlerts();
+
+        });
+
+    }
+
+    if (previousAlertsPage) {
+
+        previousAlertsPage.addEventListener("click", function () {
+
+            if (currentAlertsPage > 1) {
+
+                currentAlertsPage--;
+
+                filterSecurityAlerts();
+
+            }
+
+        });
+
+    }
+
+    if (nextAlertsPage) {
+
+        nextAlertsPage.addEventListener("click", function () {
+
+            currentAlertsPage++;
+
+            filterSecurityAlerts();
+
+        });
+
+    }
+
+
+    // ======================================
+    // TASK 12 - SEARCH EVENT LISTENERS
+    // ======================================
 
     if (alertSearch) {
 
         alertSearch.addEventListener(
             "input",
-            filterSecurityAlerts
+            function () {
+
+                currentAlertsPage = 1;
+
+                filterSecurityAlerts();
+
+            }
         );
 
     }
@@ -684,7 +975,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         severityFilter.addEventListener(
             "change",
-            filterSecurityAlerts
+            function () {
+
+                currentAlertsPage = 1;
+
+                filterSecurityAlerts();
+
+            }
         );
 
     }
@@ -694,9 +991,15 @@ document.addEventListener("DOMContentLoaded", function () {
         clearAlertSearch.addEventListener("click", function () {
 
             if (alertSearch) {
+
                 alertSearch.value = "";
+
+                currentAlertsPage = 1;
+
                 filterSecurityAlerts();
+
                 alertSearch.focus();
+
             }
 
         });
@@ -747,7 +1050,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ======================================
-    // TOTAL EVENTS COUNTER
+    // DASHBOARD COUNTERS
     // ======================================
 
     animateCounter(
@@ -757,21 +1060,11 @@ document.addEventListener("DOMContentLoaded", function () {
         value => value.toLocaleString("en-US")
     );
 
-
-    // ======================================
-    // ACTIVE ALERTS COUNTER
-    // ======================================
-
     animateCounter(
         document.getElementById("activeAlerts"),
         24,
         1200
     );
-
-
-    // ======================================
-    // CRITICAL INCIDENTS COUNTER
-    // ======================================
 
     animateCounter(
         document.getElementById("criticalIncidents"),
@@ -788,6 +1081,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const alertDetailsData = {
 
         "ALT-001": {
+
             destinationIP: "192.168.1.1",
 
             description:
@@ -800,9 +1094,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 "Check for similar login attempts against other accounts.",
                 "Escalate the incident if suspicious activity is confirmed."
             ]
+
         },
 
         "ALT-002": {
+
             destinationIP: "192.168.1.50",
 
             description:
@@ -815,9 +1111,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 "Look for suspicious network connections or downloaded files.",
                 "Escalate if malicious execution is confirmed."
             ]
+
         },
 
         "ALT-003": {
+
             destinationIP: "10.0.0.1",
 
             description:
@@ -830,9 +1128,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 "Determine whether the scanning activity was authorized.",
                 "Escalate any unauthorized reconnaissance activity."
             ]
+
         },
 
         "ALT-004": {
+
             destinationIP: "192.168.1.1",
 
             description:
@@ -845,13 +1145,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 "Compare the activity with normal network behavior.",
                 "Document the investigation findings."
             ]
+
         }
 
     };
 
 
     // ======================================
-    // ALERT DETAILS HELPER FUNCTIONS
+    // ALERT DETAILS HELPERS
     // ======================================
 
     const detailsTableBody =
@@ -882,11 +1183,14 @@ document.addEventListener("DOMContentLoaded", function () {
             alertDetailsData[alertId];
 
         if (!details) {
+
             console.warn(
                 "Alert details not found:",
                 alertId
             );
+
             return;
+
         }
 
         currentAlertId = alertId;
@@ -1008,9 +1312,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        // ======================================
         // TASK 15 - RESTORE ASSIGNMENT AND NOTES
-        // ======================================
 
         const assignment =
             getAlertAssignment(alertId);
@@ -1031,18 +1333,24 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("notesSaveMessage");
 
         if (analystSelect) {
+
             analystSelect.value =
                 assignment.analyst || "";
+
         }
 
         if (assignedAnalyst) {
+
             assignedAnalyst.textContent =
                 assignment.analyst || "Unassigned";
+
         }
 
         if (investigationNotes) {
+
             investigationNotes.value =
                 assignment.notes || "";
+
         }
 
         if (analystMessage) {
@@ -1104,7 +1412,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const row =
                 target.closest("tr[data-alert-id]");
 
-            if (row) {
+            if (row && !row.hidden) {
                 openAlertDetails(row);
             }
 
@@ -1117,7 +1425,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (
                 (event.key === "Enter" || event.key === " ") &&
-                event.target.matches("tr[data-alert-id]")
+                event.target.matches("tr[data-alert-id]") &&
+                !event.target.hidden
             ) {
 
                 event.preventDefault();
@@ -1234,7 +1543,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    // UPDATE STATUS SUMMARY COUNTS
+    // UPDATE STATUS SUMMARY
 
     function updateAlertStatusSummary() {
 
@@ -1520,7 +1829,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ======================================
-    // INITIAL ALERT FILTER STATE
+    // INITIAL ALERT FILTER & PAGINATION
     // ======================================
 
     filterSecurityAlerts();
