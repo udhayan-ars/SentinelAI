@@ -9,8 +9,11 @@ document.addEventListener("DOMContentLoaded", function () {
     // SIDEBAR NAVIGATION
     // ======================================
 
-    const navigationLinks = document.querySelectorAll(".nav-link[data-page]");
-    const pageSections = document.querySelectorAll(".page-section");
+    const navigationLinks =
+        document.querySelectorAll(".nav-link[data-page]");
+
+    const pageSections =
+        document.querySelectorAll(".page-section");
 
     const pageTitles = {
         overview: "Security Overview",
@@ -29,7 +32,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function showPage(pageName) {
 
-        const selectedPage = document.getElementById(pageName);
+        const selectedPage =
+            document.getElementById(pageName);
 
         if (!selectedPage) {
             console.warn("Page not found:", pageName);
@@ -49,8 +53,11 @@ document.addEventListener("DOMContentLoaded", function () {
             );
         });
 
-        const pageTitleElement = document.getElementById("pageTitle");
-        const breadcrumbElement = document.getElementById("breadcrumbPage");
+        const pageTitleElement =
+            document.getElementById("pageTitle");
+
+        const breadcrumbElement =
+            document.getElementById("breadcrumbPage");
 
         if (pageTitleElement) {
             pageTitleElement.textContent =
@@ -76,18 +83,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 
-    document.querySelectorAll(".view-all[data-page]").forEach(link => {
+    document.querySelectorAll(".view-all[data-page]")
+        .forEach(link => {
 
-        link.addEventListener("click", function (event) {
-            event.preventDefault();
-            showPage(this.dataset.page);
+            link.addEventListener("click", function (event) {
+                event.preventDefault();
+                showPage(this.dataset.page);
+            });
+
         });
 
-    });
+    const initialPage =
+        window.location.hash.replace("#", "");
 
-    const initialPage = window.location.hash.replace("#", "");
-
-    if (initialPage && document.getElementById(initialPage)) {
+    if (
+        initialPage &&
+        document.getElementById(initialPage)
+    ) {
         showPage(initialPage);
     } else {
         showPage("overview");
@@ -95,7 +107,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     window.addEventListener("hashchange", function () {
 
-        const page = window.location.hash.replace("#", "");
+        const page =
+            window.location.hash.replace("#", "");
 
         if (document.getElementById(page)) {
             showPage(page);
@@ -108,7 +121,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // TOPBAR SEARCH FUNCTIONALITY
     // ======================================
 
-    const topbarSearch = document.getElementById("topbarSearch");
+    const topbarSearch =
+        document.getElementById("topbarSearch");
 
     if (topbarSearch) {
 
@@ -118,15 +132,18 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            const query = this.value.trim().toLowerCase();
+            const query =
+                this.value.trim().toLowerCase();
 
             if (!query) {
                 return;
             }
 
-            const matchingLink = Array.from(navigationLinks).find(link =>
-                link.textContent.trim().toLowerCase().includes(query)
-            );
+            const matchingLink =
+                Array.from(navigationLinks).find(link =>
+                    link.textContent.trim().toLowerCase()
+                        .includes(query)
+                );
 
             if (matchingLink) {
 
@@ -162,10 +179,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ======================================
     // TASK 10 - SECURITY EVENT ACTIVITY CHART
-    // WITH INTERACTIVE TIME FILTERS
     // ======================================
 
-    const eventsCanvas = document.getElementById("eventsChart");
+    const eventsCanvas =
+        document.getElementById("eventsChart");
 
     if (eventsCanvas && typeof Chart !== "undefined") {
 
@@ -184,7 +201,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Mon", "Tue", "Wed",
                     "Thu", "Fri", "Sat", "Sun"
                 ],
-                data: [1200, 1900, 1500, 2400, 1800, 2800, 2600]
+                data: [
+                    1200, 1900, 1500,
+                    2400, 1800, 2800, 2600
+                ]
             },
 
             "30d": {
@@ -271,7 +291,11 @@ document.addEventListener("DOMContentLoaded", function () {
             const isInitiallyActive =
                 button.dataset.period === "24h";
 
-            button.classList.toggle("active", isInitiallyActive);
+            button.classList.toggle(
+                "active",
+                isInitiallyActive
+            );
+
             button.setAttribute(
                 "aria-pressed",
                 String(isInitiallyActive)
@@ -279,23 +303,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
             button.addEventListener("click", function () {
 
-                const selectedPeriod = this.dataset.period;
-                const periodData = chartPeriods[selectedPeriod];
+                const selectedPeriod =
+                    this.dataset.period;
+
+                const periodData =
+                    chartPeriods[selectedPeriod];
 
                 if (!periodData) {
                     return;
                 }
 
-                eventsChart.data.labels = periodData.labels;
-                eventsChart.data.datasets[0].data = periodData.data;
+                eventsChart.data.labels =
+                    periodData.labels;
+
+                eventsChart.data.datasets[0].data =
+                    periodData.data;
 
                 eventsChart.update();
 
                 chartFilterButtons.forEach(filter => {
 
-                    const isActive = filter === this;
+                    const isActive =
+                        filter === this;
 
-                    filter.classList.toggle("active", isActive);
+                    filter.classList.toggle(
+                        "active",
+                        isActive
+                    );
 
                     filter.setAttribute(
                         "aria-pressed",
@@ -312,7 +346,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ======================================
-    // ENHANCED SECURITY SEVERITY CHART
+    // SECURITY SEVERITY CHART
     // ======================================
 
     const severityCanvas =
@@ -383,12 +417,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
                             label: function (context) {
 
-                                const values = context.dataset.data;
+                                const values =
+                                    context.dataset.data;
 
-                                const total = values.reduce(
-                                    (sum, value) => sum + value,
-                                    0
-                                );
+                                const total =
+                                    values.reduce(
+                                        (sum, value) => sum + value,
+                                        0
+                                    );
 
                                 const percentage = (
                                     (context.raw / total) * 100
@@ -425,14 +461,16 @@ document.addEventListener("DOMContentLoaded", function () {
         try {
 
             const saved = JSON.parse(
-                localStorage.getItem(alertAssignmentStorageKey) || "{}"
+                localStorage.getItem(
+                    alertAssignmentStorageKey
+                ) || "{}"
             );
 
-            return saved &&
+            return (
+                saved &&
                 typeof saved === "object" &&
                 !Array.isArray(saved)
-                ? saved
-                : {};
+            ) ? saved : {};
 
         } catch (error) {
 
@@ -447,7 +485,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-    let savedAlertAssignments = loadAlertAssignments();
+    let savedAlertAssignments =
+        loadAlertAssignments();
 
     function saveAlertAssignments() {
 
@@ -475,7 +514,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function getAlertAssignment(alertId) {
 
-        const assignment = savedAlertAssignments[alertId];
+        const assignment =
+            savedAlertAssignments[alertId];
 
         if (
             !assignment ||
@@ -489,20 +529,24 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         return {
-            analyst: typeof assignment.analyst === "string"
-                ? assignment.analyst
-                : "",
 
-            notes: typeof assignment.notes === "string"
-                ? assignment.notes
-                : ""
+            analyst:
+                typeof assignment.analyst === "string"
+                    ? assignment.analyst
+                    : "",
+
+            notes:
+                typeof assignment.notes === "string"
+                    ? assignment.notes
+                    : ""
+
         };
 
     }
 
 
     // ======================================
-    // TASK 12 - ENHANCED ALERT SEARCH
+    // ALERT TABLE ELEMENTS
     // ======================================
 
     const alertSearch =
@@ -526,278 +570,229 @@ document.addEventListener("DOMContentLoaded", function () {
     const alertsTable =
         document.getElementById("alertsTable");
 
-    if (
-        alertSearch &&
-        severityFilter &&
-        alertsTableBody &&
-        alertCount &&
-        noAlertsMessage &&
-        alertsTable
-    ) {
+    const alertRows = alertsTableBody
+        ? Array.from(alertsTableBody.querySelectorAll("tr"))
+        : [];
 
-        const alertRows = Array.from(
-            alertsTableBody.querySelectorAll("tr")
-        );
+    const totalAlertCount =
+        alertRows.length;
 
-        const totalAlertCount = alertRows.length;
 
-        function filterSecurityAlerts() {
+    // ======================================
+    // TASK 12 - ENHANCED ALERT SEARCH
+    // ======================================
 
-            const searchValue =
-                alertSearch.value.trim().toLowerCase();
+    function filterSecurityAlerts() {
 
-            const selectedSeverity =
-                severityFilter.value.trim().toLowerCase();
-
-            let visibleCount = 0;
-
-            alertRows.forEach(row => {
-
-                const searchableRow = row.cloneNode(true);
-
-                const searchStatus =
-                    searchableRow.querySelector(".status-select");
-
-                if (searchStatus) {
-                    searchStatus.replaceWith(
-                        document.createTextNode(
-                            searchStatus.selectedOptions[0]?.textContent || ""
-                        )
-                    );
-                }
-
-                const alertId = row.dataset.alertId || "";
-
-                const assignment = getAlertAssignment(alertId);
-
-                const alertText = (
-                    searchableRow.textContent + " " +
-                    assignment.analyst + " " +
-                    assignment.notes
-                ).toLowerCase();
-
-                const rowSeverity =
-                    (row.dataset.severity || "").toLowerCase();
-
-                // Search alert details, analyst and investigation notes
-
-                const matchesSearch =
-                    alertText.includes(searchValue);
-
-                // Apply severity filter
-
-                const matchesSeverity =
-                    selectedSeverity === "all" ||
-                    rowSeverity === selectedSeverity;
-
-                // Combine search and severity conditions
-
-                const shouldDisplay =
-                    matchesSearch && matchesSeverity;
-
-                row.hidden = !shouldDisplay;
-
-                if (shouldDisplay) {
-                    visibleCount++;
-                }
-
-            });
-
-            // UPDATE ALERT COUNT
-
-            alertCount.textContent =
-                `Showing ${visibleCount} of ${totalAlertCount} alerts`;
-
-            // SHOW OR HIDE NO RESULTS MESSAGE
-
-            const noResults = visibleCount === 0;
-
-            noAlertsMessage.hidden = !noResults;
-            alertsTable.hidden = noResults;
-
-            // SHOW CLEAR BUTTON ONLY WHEN SEARCH HAS TEXT
-
-            if (clearAlertSearch) {
-                clearAlertSearch.hidden = searchValue.length === 0;
-            }
-
+        if (
+            !alertSearch ||
+            !severityFilter ||
+            !alertsTableBody ||
+            !alertCount ||
+            !noAlertsMessage ||
+            !alertsTable
+        ) {
+            return;
         }
 
-        // REAL-TIME SEARCH WHILE TYPING
+        const searchValue =
+            alertSearch.value.trim().toLowerCase();
+
+        const selectedSeverity =
+            severityFilter.value.trim().toLowerCase();
+
+        let visibleCount = 0;
+
+        alertRows.forEach(row => {
+
+            const searchableRow =
+                row.cloneNode(true);
+
+            const searchStatus =
+                searchableRow.querySelector(".status-select");
+
+            if (searchStatus) {
+
+                searchStatus.replaceWith(
+                    document.createTextNode(
+                        searchStatus.selectedOptions[0]
+                            ?.textContent || ""
+                    )
+                );
+
+            }
+
+            const alertId =
+                row.dataset.alertId || "";
+
+            const assignment =
+                getAlertAssignment(alertId);
+
+            const alertText = (
+                searchableRow.textContent + " " +
+                assignment.analyst + " " +
+                assignment.notes
+            ).toLowerCase();
+
+            const rowSeverity =
+                (row.dataset.severity || "").toLowerCase();
+
+            const matchesSearch =
+                alertText.includes(searchValue);
+
+            const matchesSeverity =
+                selectedSeverity === "all" ||
+                rowSeverity === selectedSeverity;
+
+            const shouldDisplay =
+                matchesSearch && matchesSeverity;
+
+            row.hidden = !shouldDisplay;
+
+            if (shouldDisplay) {
+                visibleCount++;
+            }
+
+        });
+
+        alertCount.textContent =
+            `Showing ${visibleCount} of ${totalAlertCount} alerts`;
+
+        const noResults =
+            visibleCount === 0;
+
+        noAlertsMessage.hidden = !noResults;
+        alertsTable.hidden = noResults;
+
+        if (clearAlertSearch) {
+            clearAlertSearch.hidden =
+                searchValue.length === 0;
+        }
+
+    }
+
+    if (alertSearch) {
 
         alertSearch.addEventListener(
             "input",
             filterSecurityAlerts
         );
 
-        // FILTER BY SEVERITY
+    }
+
+    if (severityFilter) {
 
         severityFilter.addEventListener(
             "change",
             filterSecurityAlerts
         );
 
-        // CLEAR SEARCH BUTTON
+    }
 
-        if (clearAlertSearch) {
+    if (clearAlertSearch) {
 
-            clearAlertSearch.addEventListener("click", function () {
+        clearAlertSearch.addEventListener("click", function () {
 
+            if (alertSearch) {
                 alertSearch.value = "";
-
                 filterSecurityAlerts();
-
                 alertSearch.focus();
+            }
 
-            });
-
-        }
-
-        // INITIAL ALERT COUNT AND FILTER STATE
-
-        filterSecurityAlerts();
+        });
 
     }
 
 
     // ======================================
-    // TOTAL EVENTS COUNTER ANIMATION
+    // COUNTER ANIMATION HELPER
     // ======================================
 
-    const totalEventsElement =
-        document.getElementById("totalEvents");
+    function animateCounter(element, targetValue, duration, formatter) {
 
-    if (totalEventsElement) {
+        if (!element) {
+            return;
+        }
 
-        const targetValue = 12480;
-        const duration = 1500;
         const startTime = performance.now();
 
-        function animateTotalEvents(currentTime) {
+        function updateCounter(currentTime) {
 
-            const elapsed = currentTime - startTime;
+            const elapsed =
+                currentTime - startTime;
 
-            const progress = Math.min(
-                elapsed / duration,
-                1
-            );
+            const progress =
+                Math.min(elapsed / duration, 1);
 
             const easedProgress =
                 1 - Math.pow(1 - progress, 3);
 
-            const currentValue = Math.floor(
-                targetValue * easedProgress
-            );
+            const currentValue =
+                Math.floor(targetValue * easedProgress);
 
-            totalEventsElement.textContent =
-                currentValue.toLocaleString("en-US");
+            element.textContent =
+                formatter
+                    ? formatter(currentValue)
+                    : String(currentValue);
 
             if (progress < 1) {
-                requestAnimationFrame(animateTotalEvents);
+                requestAnimationFrame(updateCounter);
             }
 
         }
 
-        requestAnimationFrame(animateTotalEvents);
+        requestAnimationFrame(updateCounter);
 
     }
 
 
     // ======================================
-    // ACTIVE ALERTS COUNTER ANIMATION
+    // TOTAL EVENTS COUNTER
     // ======================================
 
-    const activeAlertsElement =
-        document.getElementById("activeAlerts");
-
-    if (activeAlertsElement) {
-
-        const targetAlerts = 24;
-        const duration = 1200;
-        const startTime = performance.now();
-
-        function animateActiveAlerts(currentTime) {
-
-            const elapsed = currentTime - startTime;
-
-            const progress = Math.min(
-                elapsed / duration,
-                1
-            );
-
-            const easedProgress =
-                1 - Math.pow(1 - progress, 3);
-
-            const currentValue = Math.floor(
-                targetAlerts * easedProgress
-            );
-
-            activeAlertsElement.textContent = currentValue;
-
-            if (progress < 1) {
-                requestAnimationFrame(animateActiveAlerts);
-            }
-
-        }
-
-        requestAnimationFrame(animateActiveAlerts);
-
-    }
+    animateCounter(
+        document.getElementById("totalEvents"),
+        12480,
+        1500,
+        value => value.toLocaleString("en-US")
+    );
 
 
     // ======================================
-    // CRITICAL INCIDENTS COUNTER ANIMATION
+    // ACTIVE ALERTS COUNTER
     // ======================================
 
-    const criticalIncidentsElement =
-        document.getElementById("criticalIncidents");
-
-    if (criticalIncidentsElement) {
-
-        const targetIncidents = 3;
-        const duration = 1200;
-        const startTime = performance.now();
-
-        function animateCriticalIncidents(currentTime) {
-
-            const elapsed = currentTime - startTime;
-
-            const progress = Math.min(
-                elapsed / duration,
-                1
-            );
-
-            const easedProgress =
-                1 - Math.pow(1 - progress, 3);
-
-            const currentValue = Math.floor(
-                targetIncidents * easedProgress
-            );
-
-            criticalIncidentsElement.textContent =
-                String(currentValue).padStart(2, "0");
-
-            if (progress < 1) {
-                requestAnimationFrame(animateCriticalIncidents);
-            }
-
-        }
-
-        requestAnimationFrame(animateCriticalIncidents);
-
-    }
+    animateCounter(
+        document.getElementById("activeAlerts"),
+        24,
+        1200
+    );
 
 
     // ======================================
-    // TASK 13 - ALERT DETAILS PAGE
+    // CRITICAL INCIDENTS COUNTER
+    // ======================================
+
+    animateCounter(
+        document.getElementById("criticalIncidents"),
+        3,
+        1200,
+        value => String(value).padStart(2, "0")
+    );
+
+
+    // ======================================
+    // TASK 13 - ALERT DETAILS DATA
     // ======================================
 
     const alertDetailsData = {
 
         "ALT-001": {
             destinationIP: "192.168.1.1",
+
             description:
                 "Multiple failed login attempts were detected from the same source IP address. This activity may indicate a brute-force login attempt.",
+
             steps: [
                 "Review the failed login events and identify the targeted account.",
                 "Check whether any successful login occurred after the failures.",
@@ -809,8 +804,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         "ALT-002": {
             destinationIP: "192.168.1.50",
+
             description:
                 "Suspicious PowerShell execution was detected. Review the command and process activity to determine whether it is legitimate or malicious.",
+
             steps: [
                 "Review the PowerShell command-line arguments.",
                 "Identify the parent process and executing user.",
@@ -822,8 +819,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         "ALT-003": {
             destinationIP: "10.0.0.1",
+
             description:
                 "Port scanning activity was detected from the source IP. This may indicate network reconnaissance against internal systems.",
+
             steps: [
                 "Identify the destination host and scanned ports.",
                 "Review firewall logs for blocked and allowed connections.",
@@ -835,8 +834,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         "ALT-004": {
             destinationIP: "192.168.1.1",
+
             description:
                 "An unusual network connection was detected. Review the destination and connection history to determine whether the activity is expected.",
+
             steps: [
                 "Review the destination IP and connection details.",
                 "Check DNS and network logs for related activity.",
@@ -848,13 +849,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     };
 
-    // Reuse the existing alerts table body
 
-    const detailsTableBody = alertsTableBody;
+    // ======================================
+    // ALERT DETAILS HELPER FUNCTIONS
+    // ======================================
+
+    const detailsTableBody =
+        alertsTableBody;
 
     function setDetailText(elementId, value) {
 
-        const element = document.getElementById(elementId);
+        const element =
+            document.getElementById(elementId);
 
         if (element) {
             element.textContent = value;
@@ -862,20 +868,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
+
+    // ======================================
+    // OPEN ALERT DETAILS
+    // ======================================
+
     function openAlertDetails(row) {
 
-        const alertId = row.dataset.alertId;
+        const alertId =
+            row.dataset.alertId;
 
-        currentAlertId = alertId;
-
-        const details = alertDetailsData[alertId];
+        const details =
+            alertDetailsData[alertId];
 
         if (!details) {
-            console.warn("Alert details not found:", alertId);
+            console.warn(
+                "Alert details not found:",
+                alertId
+            );
             return;
         }
 
-        const cells = row.querySelectorAll("td");
+        currentAlertId = alertId;
+
+        const cells =
+            row.querySelectorAll("td");
 
         const alertTitle =
             cells[0]?.textContent.trim() || "Unknown Alert";
@@ -895,23 +912,34 @@ document.addEventListener("DOMContentLoaded", function () {
             cells[4]?.textContent.trim() ||
             "Unknown";
 
+
         // ALERT INFORMATION
 
-        setDetailText("detailAlertTitle", alertTitle);
+        setDetailText(
+            "detailAlertTitle",
+            alertTitle
+        );
 
         setDetailText(
             "detailAlertId",
             `Alert ID: ${alertId}`
         );
 
-        setDetailText("detailSourceIP", sourceIP);
+        setDetailText(
+            "detailSourceIP",
+            sourceIP
+        );
 
         setDetailText(
             "detailDestinationIP",
             details.destinationIP
         );
 
-        setDetailText("detailTimestamp", timestamp);
+        setDetailText(
+            "detailTimestamp",
+            timestamp
+        );
+
 
         // STATUS BADGE
 
@@ -930,6 +958,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         }
 
+
         // SEVERITY BADGE
 
         const severityElement =
@@ -947,12 +976,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
         }
 
+
         // ALERT DESCRIPTION
 
         setDetailText(
             "detailDescription",
             details.description
         );
+
 
         // INVESTIGATION STEPS
 
@@ -965,7 +996,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             details.steps.forEach(step => {
 
-                const listItem = document.createElement("li");
+                const listItem =
+                    document.createElement("li");
 
                 listItem.textContent = step;
 
@@ -980,7 +1012,8 @@ document.addEventListener("DOMContentLoaded", function () {
         // TASK 15 - RESTORE ASSIGNMENT AND NOTES
         // ======================================
 
-        const assignment = getAlertAssignment(alertId);
+        const assignment =
+            getAlertAssignment(alertId);
 
         const analystSelect =
             document.getElementById("alertAnalystSelect");
@@ -998,7 +1031,8 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("notesSaveMessage");
 
         if (analystSelect) {
-            analystSelect.value = assignment.analyst || "";
+            analystSelect.value =
+                assignment.analyst || "";
         }
 
         if (assignedAnalyst) {
@@ -1007,7 +1041,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         if (investigationNotes) {
-            investigationNotes.value = assignment.notes || "";
+            investigationNotes.value =
+                assignment.notes || "";
         }
 
         if (analystMessage) {
@@ -1023,12 +1058,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
+    // ======================================
+    // ALERT ROW INITIALIZATION
+    // ======================================
+
     if (detailsTableBody) {
 
         const detailRows =
             detailsTableBody.querySelectorAll("tr");
-
-        // ASSIGN ALERT IDs WITHOUT OVERWRITING EXISTING IDs
 
         detailRows.forEach((row, index) => {
 
@@ -1059,8 +1096,6 @@ document.addEventListener("DOMContentLoaded", function () {
             if (!(target instanceof Element)) {
                 return;
             }
-
-            // Do not open details when status dropdown is clicked
 
             if (target.closest(".status-select")) {
                 return;
@@ -1105,14 +1140,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (backToAlertsButton) {
 
-        backToAlertsButton.addEventListener("click", () => {
+        backToAlertsButton.addEventListener("click", function () {
 
             showPage("overview");
 
-            document.getElementById("alertsTable")?.scrollIntoView({
-                behavior: "smooth",
-                block: "center"
-            });
+            document.getElementById("alertsTable")
+                ?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
 
         });
 
@@ -1132,22 +1168,21 @@ document.addEventListener("DOMContentLoaded", function () {
         "resolved"
     ];
 
-
-    // LOAD SAVED ALERT STATUSES
-
     function loadAlertStatuses() {
 
         try {
 
             const savedStatuses = JSON.parse(
-                localStorage.getItem(alertStatusStorageKey) || "{}"
+                localStorage.getItem(
+                    alertStatusStorageKey
+                ) || "{}"
             );
 
-            return savedStatuses &&
+            return (
+                savedStatuses &&
                 typeof savedStatuses === "object" &&
                 !Array.isArray(savedStatuses)
-                ? savedStatuses
-                : {};
+            ) ? savedStatuses : {};
 
         } catch (error) {
 
@@ -1162,29 +1197,39 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-    let savedAlertStatuses = loadAlertStatuses();
+    let savedAlertStatuses =
+        loadAlertStatuses();
 
 
-    // CREATE STATUS SUMMARY ELEMENT
+    // STATUS SUMMARY ELEMENT
 
-    const alertStatusSummary =
-        document.createElement("div");
+    let alertStatusSummary =
+        document.getElementById("alertStatusSummary");
 
-    alertStatusSummary.id = "alertStatusSummary";
+    if (!alertStatusSummary) {
 
-    alertStatusSummary.className = "alert-status-summary";
+        alertStatusSummary =
+            document.createElement("div");
 
-    alertStatusSummary.setAttribute(
-        "aria-live",
-        "polite"
-    );
+        alertStatusSummary.id =
+            "alertStatusSummary";
 
-    if (alertsTable) {
+        alertStatusSummary.className =
+            "alert-status-summary";
 
-        alertsTable.insertAdjacentElement(
-            "beforebegin",
-            alertStatusSummary
+        alertStatusSummary.setAttribute(
+            "aria-live",
+            "polite"
         );
+
+        if (alertsTable) {
+
+            alertsTable.insertAdjacentElement(
+                "beforebegin",
+                alertStatusSummary
+            );
+
+        }
 
     }
 
@@ -1205,7 +1250,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 .querySelectorAll(".status-select")
                 .forEach(select => {
 
-                    if (statusCounts[select.value] !== undefined) {
+                    if (
+                        Object.prototype.hasOwnProperty.call(
+                            statusCounts,
+                            select.value
+                        )
+                    ) {
                         statusCounts[select.value]++;
                     }
 
@@ -1213,15 +1263,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
         }
 
-        alertStatusSummary.textContent =
-            `Open: ${statusCounts.open} | ` +
-            `Investigating: ${statusCounts.investigating} | ` +
-            `Resolved: ${statusCounts.resolved}`;
+        if (alertStatusSummary) {
+
+            alertStatusSummary.textContent =
+                `Open: ${statusCounts.open} | ` +
+                `Investigating: ${statusCounts.investigating} | ` +
+                `Resolved: ${statusCounts.resolved}`;
+
+        }
 
     }
 
 
-    // SAVE ALERT STATUSES TO LOCAL STORAGE
+    // SAVE ALERT STATUSES
 
     function saveAlertStatuses() {
 
@@ -1232,12 +1286,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 JSON.stringify(savedAlertStatuses)
             );
 
+            return true;
+
         } catch (error) {
 
             console.warn(
                 "Unable to save alert statuses:",
                 error
             );
+
+            return false;
 
         }
 
@@ -1247,14 +1305,17 @@ document.addEventListener("DOMContentLoaded", function () {
     if (detailsTableBody) {
 
         const statusRows =
-            detailsTableBody.querySelectorAll("tr[data-alert-id]");
+            detailsTableBody.querySelectorAll(
+                "tr[data-alert-id]"
+            );
 
 
-        // RESTORE SAVED STATUSES WHEN PAGE LOADS
+        // RESTORE SAVED STATUSES
 
         statusRows.forEach(row => {
 
-            const alertId = row.dataset.alertId;
+            const alertId =
+                row.dataset.alertId;
 
             const statusSelect =
                 row.querySelector(".status-select");
@@ -1266,11 +1327,11 @@ document.addEventListener("DOMContentLoaded", function () {
             const savedStatus =
                 savedAlertStatuses[alertId];
 
-            if (validAlertStatuses.includes(savedStatus)) {
+            if (
+                validAlertStatuses.includes(savedStatus)
+            ) {
                 statusSelect.value = savedStatus;
             }
-
-            // APPLY STATUS CLASS
 
             statusSelect.className =
                 `status-select ${statusSelect.value}`;
@@ -1310,41 +1371,23 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            const alertId = row.dataset.alertId;
+            const alertId =
+                row.dataset.alertId;
 
-            const newStatus = statusSelect.value;
-
-
-            // UPDATE STATUS DROPDOWN STYLE
+            const newStatus =
+                statusSelect.value;
 
             statusSelect.className =
                 `status-select ${newStatus}`;
 
-
-            // SAVE UPDATED STATUS
-
-            savedAlertStatuses[alertId] = newStatus;
+            savedAlertStatuses[alertId] =
+                newStatus;
 
             saveAlertStatuses();
 
-
-            // UPDATE SUMMARY COUNTS
-
             updateAlertStatusSummary();
 
-
-            // REFRESH SEARCH RESULTS
-
-            if (alertSearch) {
-
-                alertSearch.dispatchEvent(
-                    new Event("input", {
-                        bubbles: true
-                    })
-                );
-
-            }
-
+            filterSecurityAlerts();
 
             console.log(
                 `Alert ${alertId} status updated to ${newStatus}.`
@@ -1358,19 +1401,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // INITIAL STATUS SUMMARY
 
     updateAlertStatusSummary();
-
-
-    // REFRESH SEARCH AFTER RESTORING SAVED STATUSES
-
-    if (alertSearch) {
-
-        alertSearch.dispatchEvent(
-            new Event("input", {
-                bubbles: true
-            })
-        );
-
-    }
 
 
     // ==========================================
@@ -1406,32 +1436,35 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            const assignment = getAlertAssignment(currentAlertId);
+            const assignment =
+                getAlertAssignment(currentAlertId);
 
-            assignment.analyst = this.value;
+            assignment.analyst =
+                this.value;
 
-            savedAlertAssignments[currentAlertId] = assignment;
+            savedAlertAssignments[currentAlertId] =
+                assignment;
 
-            const saved = saveAlertAssignments();
+            const saved =
+                saveAlertAssignments();
 
             if (assignedAnalyst) {
+
                 assignedAnalyst.textContent =
                     this.value || "Unassigned";
+
             }
 
             if (analystSaveMessage) {
-                analystSaveMessage.textContent = saved
-                    ? "Analyst assignment saved."
-                    : "Unable to save assignment.";
+
+                analystSaveMessage.textContent =
+                    saved
+                        ? "Analyst assignment saved."
+                        : "Unable to save assignment.";
+
             }
 
-            // REFRESH SEARCH RESULTS
-
-            if (alertSearch) {
-                alertSearch.dispatchEvent(
-                    new Event("input", { bubbles: true })
-                );
-            }
+            filterSecurityAlerts();
 
             console.log(
                 `Alert ${currentAlertId} assigned to ${this.value || "Unassigned"}.`
@@ -1452,29 +1485,30 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            const assignment = getAlertAssignment(currentAlertId);
+            const assignment =
+                getAlertAssignment(currentAlertId);
 
-            assignment.notes = investigationNotes
-                ? investigationNotes.value.trim()
-                : "";
+            assignment.notes =
+                investigationNotes
+                    ? investigationNotes.value.trim()
+                    : "";
 
-            savedAlertAssignments[currentAlertId] = assignment;
+            savedAlertAssignments[currentAlertId] =
+                assignment;
 
-            const saved = saveAlertAssignments();
+            const saved =
+                saveAlertAssignments();
 
             if (notesSaveMessage) {
-                notesSaveMessage.textContent = saved
-                    ? "Investigation notes saved successfully."
-                    : "Unable to save notes.";
+
+                notesSaveMessage.textContent =
+                    saved
+                        ? "Investigation notes saved successfully."
+                        : "Unable to save notes.";
+
             }
 
-            // REFRESH SEARCH RESULTS
-
-            if (alertSearch) {
-                alertSearch.dispatchEvent(
-                    new Event("input", { bubbles: true })
-                );
-            }
+            filterSecurityAlerts();
 
             console.log(
                 `Investigation notes saved for ${currentAlertId}.`
@@ -1483,6 +1517,13 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
     }
+
+
+    // ======================================
+    // INITIAL ALERT FILTER STATE
+    // ======================================
+
+    filterSecurityAlerts();
 
 
     // ======================================

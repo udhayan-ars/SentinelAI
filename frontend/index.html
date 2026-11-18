@@ -275,6 +275,21 @@
                         </select>
                     </div>
 
+                    <!-- TASK 16 - ALERT SORTING -->
+                    <div class="alerts-sort">
+                        <label for="alertSort">Sort By:</label>
+
+                        <select id="alertSort" aria-label="Sort alerts">
+
+                            <option value="default">Default Order</option>
+                            <option value="severity-desc">Severity: Critical to Low</option>
+                            <option value="severity-asc">Severity: Low to Critical</option>
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+
+                        </select>
+                    </div>
+
                 </div>
 
                 <!-- SEARCH RESULT INFORMATION -->
@@ -380,6 +395,39 @@
 
                 </div>
 
+                <!-- TASK 16 - ALERT PAGINATION -->
+                <div class="alerts-pagination" id="alertsPagination">
+
+                    <div class="pagination-size">
+                        <label for="alertsPerPage">Rows per page:</label>
+
+                        <select id="alertsPerPage" aria-label="Select rows per page">
+                            <option value="2" selected>2</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                        </select>
+                    </div>
+
+                    <div class="pagination-controls">
+
+                        <button type="button"
+                            id="previousAlertsPage"
+                            disabled>
+                            Previous
+                        </button>
+
+                        <span id="alertsPageInfo" aria-live="polite">
+                            Page 1 of 2
+                        </span>
+
+                        <button type="button" id="nextAlertsPage">
+                            Next
+                        </button>
+
+                    </div>
+
+                </div>
+
                 <p class="chart-data-note">SAMPLE ALERT RECORDS &middot; NOT LIVE</p>
 
             </section>
@@ -428,6 +476,7 @@
             </div>
 
             <div class="alert-details-card">
+
                 <div class="alert-details-title">
                     <div>
                         <span class="details-label">ALERT INFORMATION</span>
@@ -439,6 +488,7 @@
                 </div>
 
                 <div class="alert-details-grid">
+
                     <div class="detail-item">
                         <span>Source IP Address</span>
                         <strong id="detailSourceIP">-</strong>
@@ -458,7 +508,9 @@
                         <span>Current Status</span>
                         <strong id="detailStatus">-</strong>
                     </div>
+
                 </div>
+
             </div>
 
             <div class="alert-details-card">
@@ -467,53 +519,51 @@
             </div>
 
             <!-- TASK 15 - ALERT ASSIGNMENT & INVESTIGATION NOTES -->
-<div class="alert-details-card task15-assignment-card">
+            <div class="alert-details-card task15-assignment-card">
 
-    <h3>Alert Assignment & Investigation Notes</h3>
+                <h3>Alert Assignment & Investigation Notes</h3>
 
-    <div class="task15-form-grid">
+                <div class="task15-form-grid">
 
-        <div class="task15-field">
-            <label for="alertAnalystSelect">Assign Analyst</label>
+                    <div class="task15-field">
+                        <label for="alertAnalystSelect">Assign Analyst</label>
 
-            <select id="alertAnalystSelect">
-                <option value="">Unassigned</option>
-                <option value="SOC Analyst L1">SOC Analyst L1</option>
-                <option value="SOC Analyst L2">SOC Analyst L2</option>
-                <option value="Incident Responder">Incident Responder</option>
-            </select>
+                        <select id="alertAnalystSelect">
+                            <option value="">Unassigned</option>
+                            <option value="SOC Analyst L1">SOC Analyst L1</option>
+                            <option value="SOC Analyst L2">SOC Analyst L2</option>
+                            <option value="Incident Responder">Incident Responder</option>
+                        </select>
 
-            <small id="analystSaveMessage" role="status"></small>
-        </div>
+                        <small id="analystSaveMessage" role="status"></small>
+                    </div>
 
-        <div class="detail-item">
-            <span>Currently Assigned Analyst</span>
-            <strong id="detailAssignedAnalyst">Unassigned</strong>
-        </div>
+                    <div class="detail-item">
+                        <span>Currently Assigned Analyst</span>
+                        <strong id="detailAssignedAnalyst">Unassigned</strong>
+                    </div>
 
-    </div>
+                </div>
 
-    <div class="task15-field notes-field">
-        <label for="alertInvestigationNotes">Investigation Notes</label>
+                <div class="task15-field notes-field">
+                    <label for="alertInvestigationNotes">Investigation Notes</label>
 
-        <textarea
-            id="alertInvestigationNotes"
-            rows="5"
-            placeholder="Enter your investigation findings here..."></textarea>
-    </div>
+                    <textarea
+                        id="alertInvestigationNotes"
+                        rows="5"
+                        placeholder="Enter your investigation findings here..."></textarea>
+                </div>
 
-    <div class="task15-actions">
-        <button type="button" id="saveAlertNotes">
-            Save Notes
-        </button>
+                <div class="task15-actions">
+                    <button type="button" id="saveAlertNotes">
+                        Save Notes
+                    </button>
 
-        <span id="notesSaveMessage" role="status"></span>
-    </div>
+                    <span id="notesSaveMessage" role="status"></span>
+                </div>
 
-</div>
-            
-            
-            
+            </div>
+
             <div class="alert-details-card">
                 <h3>Recommended Investigation Steps</h3>
                 <ol id="detailInvestigationSteps">

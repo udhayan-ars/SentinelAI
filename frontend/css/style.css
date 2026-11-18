@@ -1585,4 +1585,106 @@ tbody tr:last-child td {
         width: 100%;
     }
 }
+/* ==========================================
+   TASK 16 - ALERT SORTING & PAGINATION
+========================================== */
 
+.alerts-sort,
+.pagination-size {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.alerts-sort label,
+.pagination-size label {
+    color: #aab9cc;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.alerts-sort select,
+.pagination-size select {
+    padding: 9px 12px;
+    color: #e5e7eb;
+    background: #0b1728;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    font-family: inherit;
+    font-size: 12px;
+    outline: none;
+    cursor: pointer;
+}
+
+.alerts-sort select:focus,
+.pagination-size select:focus {
+    border-color: var(--blue);
+}
+
+.alerts-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.pagination-controls button {
+    padding: 9px 15px;
+    color: #e5e7eb;
+    background: #14243a;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.pagination-controls button:hover:not(:disabled) {
+    background: var(--blue);
+    border-color: var(--blue);
+}
+
+.pagination-controls button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+#alertsPageInfo {
+    color: #aab9cc;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+    .alerts-toolbar {
+        flex-wrap: wrap;
+    }
+
+    .alerts-sort {
+        width: 100%;
+    }
+
+    .alerts-sort select {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .alerts-pagination {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .pagination-controls {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
